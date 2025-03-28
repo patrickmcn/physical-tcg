@@ -1,7 +1,9 @@
+import os
 class Cards:
     def __init__(self, name = "default", power = 0):
         self.name = name
         self.power = power
+        self.imagefile = f"images/{name}.png"
 
     @property
     def name(self):
@@ -24,6 +26,17 @@ class Cards:
             self._power = value
         else:
             self._power = 0
+
+    @property
+    def imagefile(self):
+        return self._imagefile
+    
+    @imagefile.setter
+    def imagefile(self, value):
+        if(os.path.isfile(value)):
+            self._imagefile = value
+        else:
+            self._imagefile = "images/default.png"
 
     def __str__(self):
         return f"{self.name} has {self.power} power"
@@ -54,3 +67,5 @@ c2 = Cards("guy", 7)
 print(c1) 
 print(c2)
 print (c1 > c2)
+c1.power = 4
+print(c1)
