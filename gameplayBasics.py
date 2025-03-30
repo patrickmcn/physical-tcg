@@ -1,4 +1,5 @@
 import os
+from tkinter import *
 class Cards:
     def __init__(self, name = "default", power = 0):
         self.name = name
@@ -61,11 +62,41 @@ class Cards:
         if(card1 == card2):
             return True
         return False
-    
-c1 = Cards()
-c2 = Cards("guy", 7)
-print(c1) 
-print(c2)
-print (c1 > c2)
-c1.power = 4
-print(c1)
+
+class MainGUI(Frame):
+    def __init__(self, parent):
+        Frame.__init__(self, parent, bg = "white")
+        self.setUpGUI()
+
+    def setUpGUI(self):
+        for row in range(3):
+            Grid.rowconfigure(self, row, weight = 1)
+            
+            for col in range(5):
+                Grid.rowconfigure(self, col, weight =1)
+        
+        testOpp1 = "physical-tcg/images/3PowerCard.png"
+        img = PhotoImage(file = testOpp1)
+        testCard = Label(self, image= img, bg = "black")
+        testCard.image = img
+        testCard.grid(row = 0, column = 1)
+
+        self.pack(side = "bottom",fill = BOTH, expand = 1)
+
+        
+#create window
+window = Tk()
+#set window title 
+window.title("Card Test")
+#generate the GUI
+p = MainGUI(window)
+#display the gut and wait for user interaction
+window.mainloop()
+
+#c1 = Cards()
+#c2 = Cards("guy", 7)
+#print(c1) 
+#print(c2)
+#print (c1 > c2)
+#c1.power = 4
+#print(c1)
