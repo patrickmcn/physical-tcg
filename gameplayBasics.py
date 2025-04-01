@@ -1,5 +1,6 @@
 import os
 from tkinter import *
+import random
 class Cards:
     def __init__(self, name = "default", power = 0):
         self.name = name
@@ -63,23 +64,63 @@ class Cards:
             return True
         return False
 
+class Deck:
+    def __init__(self):
+        self.cards = []
+        for num in range(0,10):
+            self.cards.append(Cards())
+    @property
+    def cards (self):
+        return self._cards
+    
+    @cards.setter
+    def cards (self, value):
+        self._cards = value
+    
+    # functions for the Deck class
+    def shuffle (self):
+        random.shuffle(self.cards)
+    
+    def draw (self):
+        try:
+            topCard = self.cards[0]
+        except IndexError:
+            return None
+        self.cards.pop(0)
+        return topCard
+    pass
+
 class MainGUI(Frame):
     def __init__(self, parent):
         Frame.__init__(self, parent, bg = "white")
         self.setUpGUI()
 
     def setUpGUI(self):
-        for row in range(3):
+        for row in range(5):
             Grid.rowconfigure(self, row, weight = 1)
             
-            for col in range(5):
+            for col in range(7):
                 Grid.rowconfigure(self, col, weight =1)
         
-        testOpp1 = "physical-tcg/images/3PowerCard.png"
+        testOpp1 = "images/3PowerCardSmall.png"
         img = PhotoImage(file = testOpp1)
         testCard = Label(self, image= img, bg = "black")
         testCard.image = img
-        testCard.grid(row = 0, column = 1)
+        testCard.grid(row = 0, column = 0)
+
+        lane1 = Label(self, text = "Lane 1")
+        lane1.grid(row = 3, column = 2 )
+
+        lane2 = Label(self, text = "Lane 2")
+        lane2.grid(row = 3, column = 4 )
+
+        lane3 = Label(self, text = "Lane 3")
+        lane3.grid(row = 3, column = 6 )
+
+        img = PhotoImage(file = testOpp1)
+        testCard2 = Label(self, image= img, bg = "black")
+        testCard2.image = img
+        testCard2.grid(row = 5, column = 7)
 
         self.pack(side = "bottom",fill = BOTH, expand = 1)
 
