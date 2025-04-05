@@ -96,6 +96,15 @@ class MainGUI(Frame):
         self.p2deck = Deck()
         self.p1hand = []
         self.p2hand = []
+        self.p1Lane1 = []
+        self.p1Lane2 = []
+        self.p1Lane3 = []
+        self.p2Lane1 = []
+        self.p2Lane2 = []
+        self.p2Lane3 = []
+        self.phase = 0
+        self.p1Turn = True
+        self.turnCount = 1
         self.setUpGUI()
 
     def putInHand(self):
@@ -126,12 +135,48 @@ class MainGUI(Frame):
         lane3 = Label(self, text = "Lane 3")
         lane3.grid(row = 3, column = 6 )
 
-        nextButton = Button(self, text = "Next Phase", command = print(self.p1deck.cards[1]))
+        p1l1 = "physical-tcg/images/p1l1.png"
+        img = PhotoImage(file= p1l1)
+        self.player1Lane1 = Label(self, image= img, bg = "black")
+        self.player1Lane1.image = img
+        self.player1Lane1.grid(row = 4,column = 2 )
+
+        p1l2 = "physical-tcg/images/p1l2.png"
+        img = PhotoImage(file= p1l2)
+        self.player1Lane2 = Label(self, image= img)
+        self.player1Lane2.image = img
+        self.player1Lane2.grid(row = 4,column = 4 )
+
+        p1l3 = "physical-tcg/images/p1l3.png"
+        img = PhotoImage(file= p1l3)
+        self.player1Lane3 = Label(self, image= img)
+        self.player1Lane3.image = img
+        self.player1Lane3.grid(row = 4,column = 6 )
+
+        p2l1 = "physical-tcg/images/p2l1.png"
+        img = PhotoImage(file= p2l1)
+        self.player2Lane1 = Label(self, image= img, bg = "black")
+        self.player2Lane1.image = img
+        self.player2Lane1.grid(row = 2,column = 2 )
+
+        p2l2 = "physical-tcg/images/p2l2.png"
+        img = PhotoImage(file= p2l2)
+        self.player2Lane2 = Label(self, image= img)
+        self.player2Lane2.image = img
+        self.player2Lane2.grid(row = 2,column = 4 )
+
+        p2l3 = "physical-tcg/images/p2l3.png"
+        img = PhotoImage(file= p2l3)
+        self.player2Lane3 = Label(self, image= img)
+        self.player2Lane3.image = img
+        self.player2Lane3.grid(row = 2,column = 6 )
+
+        nextButton = Button(self, text = "Next Phase", command = lambda: self.turnProgression() )
         nextButton.grid(row =3, column = 7)
 
         testDraw = self.p1hand[0].imagefile
         img = PhotoImage(file = testDraw)
-        testCard2 = Button(self, image= img, bg = "black")
+        testCard2 = Button(self, image= img, bg = "black", command= lambda: self.play(self.p1Turn, 1))
         testCard2.image = img
         testCard2.grid(row = 5, column = 0)
 
@@ -149,8 +194,24 @@ class MainGUI(Frame):
 
         self.pack(side = "bottom",fill = BOTH, expand = 1)
     
-    def play():
-        pass
+    def turnProgression(self):
+        if(self.turnCount > 3):
+            print("end")
+        self.phase += 1
+        if (self.phase > 0 and self.p1Turn == True):
+            self.p1Turn = False
+        elif(self.phase > 0 and self.p1Turn == False):
+            self.turnCount += 1
+            self.p1Turn = True
+
+
+    def play(self,isP1Turn, handslot):
+        if (isP1Turn == True):
+            self.p1Lane1.append(self.p1hand[0])
+            self.p1hand.pop(0)
+            img = PhotoImage(file = self.p1Lane1[0].imagefile)
+            self.player1Lane1.configure(image =img)
+            self.player1Lane1.image = img
 
 
         
