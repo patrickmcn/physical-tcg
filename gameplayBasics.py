@@ -5,7 +5,7 @@ class Cards:
     def __init__(self, name = "default", power = 0):
         self.name = name
         self.power = power
-        self.imagefile = f"images/{name}.png"
+        self.imagefile = f"physical-tcg/images/{name}.png"
 
     @property
     def name(self):
@@ -88,23 +88,32 @@ class Deck:
             return None
         self.cards.pop(0)
         return topCard
-    pass
 
 class MainGUI(Frame):
     def __init__(self, parent):
         Frame.__init__(self, parent, bg = "white")
+        self.p1deck = Deck()
+        self.p2deck = Deck()
+        self.p1hand = []
+        self.p2hand = []
         self.setUpGUI()
 
+    def putInHand(self):
+        card = self.p1deck.draw()
+        self.p1hand.append(card)
+    
     def setUpGUI(self):
+        for i in range(0,6):
+            self.putInHand()
         for row in range(5):
             Grid.rowconfigure(self, row, weight = 1)
             
             for col in range(7):
                 Grid.rowconfigure(self, col, weight =1)
         
-        testOpp1 = "images/3PowerCardSmall.png"
+        testOpp1 = "physical-tcg/images/3PowerCardSmall.png"
         img = PhotoImage(file = testOpp1)
-        testCard = Label(self, image= img, bg = "black")
+        testCard = Button(self, image= img, bg = "black")
         testCard.image = img
         testCard.grid(row = 0, column = 0)
 
@@ -117,12 +126,32 @@ class MainGUI(Frame):
         lane3 = Label(self, text = "Lane 3")
         lane3.grid(row = 3, column = 6 )
 
-        img = PhotoImage(file = testOpp1)
-        testCard2 = Label(self, image= img, bg = "black")
+        nextButton = Button(self, text = "Next Phase", command = print(self.p1deck.cards[1]))
+        nextButton.grid(row =3, column = 7)
+
+        testDraw = self.p1hand[0].imagefile
+        img = PhotoImage(file = testDraw)
+        testCard2 = Button(self, image= img, bg = "black")
+        testCard2.image = img
+        testCard2.grid(row = 5, column = 0)
+
+        testDraw = self.p1hand[1].imagefile
+        img = PhotoImage(file = testDraw)
+        testCard2 = Button(self, image= img, bg = "black")
+        testCard2.image = img
+        testCard2.grid(row = 5, column = 4)
+        
+        testDraw = self.p1hand[2].imagefile
+        img = PhotoImage(file = testDraw)
+        testCard2 = Button(self, image= img, bg = "black")
         testCard2.image = img
         testCard2.grid(row = 5, column = 7)
 
         self.pack(side = "bottom",fill = BOTH, expand = 1)
+    
+    def play():
+        pass
+
 
         
 #create window
