@@ -2,10 +2,11 @@ import os
 from tkinter import *
 import random
 class Cards:
-    def __init__(self, name = "test", power = 0):
+    def __init__(self, name = "test", power = 0, type = "monster"):
         self.name = name
         self.power = power
         self.imagefile = f"physical-tcg/images/{name}.png"
+        self.type = type
 
     @property
     def name(self):
@@ -98,6 +99,7 @@ class Deck2(Deck):
     def __init__(self):
         super().__init__()
         self.cards = []
+        self.cards.append(Cards("test", 2, "spell"))
         for num in range(0,10):
             self.cards.append(Cards("test3", 3))
 
@@ -369,6 +371,58 @@ class MainGUI(Frame):
             if(handslot == 4):
                 self.p2Card5.configure(image =img)
                 self.p2Card5.image = img
+
+    def playSpell(self,isP1Turn, handslot, lane):
+        if(isP1Turn):
+            if(lane == 1):
+                try:
+                    self.p1Lane1[0].power + self.p1hand[handslot].power
+                    self.p1hand.pop(handslot)
+                    self.p1hand.insert(handslot, Cards("default"))
+                    self.handManager(isP1Turn, handslot)
+                except:
+                    print("no monster card here")
+            if(lane == 2):
+                try:
+                    self.p1Lane2[0].power + self.p1hand[handslot].power
+                    self.p1hand.pop(handslot)
+                    self.p1hand.insert(handslot, Cards("default"))
+                    self.handManager(isP1Turn, handslot)
+                except:
+                    print("no monster card here")
+            if(lane == 3):
+                try:
+                    self.p1Lane3[0].power + self.p1hand[handslot].power
+                    self.p1hand.pop(handslot)
+                    self.p1hand.insert(handslot, Cards("default"))
+                    self.handManager(isP1Turn, handslot)
+                except:
+                    print("no monster card here")
+        if(isP1Turn == False):
+            if(lane == 1):
+                try:
+                    self.p2Lane1[0].power + self.p1hand[handslot].power
+                    self.p2hand.pop(handslot)
+                    self.p2hand.insert(handslot, Cards("default"))
+                    self.handManager(isP1Turn, handslot)
+                except:
+                    print("no monster card here")
+            if(lane == 2):
+                try:
+                    self.p2Lane2[0].power + self.p1hand[handslot].power
+                    self.p2hand.pop(handslot)
+                    self.p2hand.insert(handslot, Cards("default"))
+                    self.handManager(isP1Turn, handslot)
+                except:
+                    print("no monster card here")
+            if(lane == 3):
+                try:
+                    self.p2Lane3[0].power + self.p1hand[handslot].power
+                    self.p2hand.pop(handslot)
+                    self.p2hand.insert(handslot, Cards("default"))
+                    self.handManager(isP1Turn, handslot)
+                except:
+                    print("no monster card here")
         
     def playLane(self,isP1Turn, handslot, lane):
         if (self.p1hand[handslot].name == "default" and isP1Turn == True):
@@ -377,6 +431,9 @@ class MainGUI(Frame):
         if (self.p2hand[handslot].name == "default" and isP1Turn == False):
             print("no card here")
             return ""
+        if(self.p1hand[handslot].type == "spell"):
+            self.playSpell(isP1Turn, handslot, lane)
+
         if(lane == 1):
             if (isP1Turn == True):
                 self.p1Lane1.append(self.p1hand[handslot])
