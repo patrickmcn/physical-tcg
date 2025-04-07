@@ -325,17 +325,70 @@ class MainGUI(Frame):
 
         self.pack(side = "bottom",fill = BOTH, expand = 1)
     
+    def drawPhase(self):
+        self.playedMonster = False
+        if (self.p1Turn):
+            for i in range(len(self.p1hand)):
+                if(self.p1hand[i].name == "default"):
+                    self.p1hand.pop(i)
+                    card = self.p1deck.draw()
+                    self.p1hand.insert(i, card)
+                    img = PhotoImage(file = self.p1hand[i].imagefile)
+                    if(i == 0):
+                        self.p1Card1.configure(image =img)
+                        self.p1Card1.image = img
+                    if(i == 1):
+                        self.p1Card2.configure(image =img)
+                        self.p1Card2.image = img
+                    if(i == 2):
+                        self.p1Card3.configure(image =img)
+                        self.p1Card3.image = img
+                    if(i == 3):
+                        self.p1Card4.configure(image =img)
+                        self.p1Card4.image = img
+                    if(i == 4):
+                        self.p1Card5.configure(image =img)
+                        self.p1Card5.image = img
+        if (self.p1Turn == False):
+            for i in range(len(self.p2hand)):
+                if(self.p2hand[i].name == "default"):
+                    self.p2hand.pop(i)
+                    card = self.p2deck.draw()
+                    self.p2hand.insert(i, card)
+                    img = PhotoImage(file = self.p2hand[i].imagefile)
+                    if(i == 0):
+                        self.p2Card1.configure(image =img)
+                        self.p2Card1.image = img
+                    if(i == 1):
+                        self.p2Card2.configure(image =img)
+                        self.p2Card2.image = img
+                    if(i == 2):
+                        self.p2Card3.configure(image =img)
+                        self.p2Card3.image = img
+                    if(i == 3):
+                        self.p2Card4.configure(image =img)
+                        self.p2Card4.image = img
+                    if(i == 4):
+                        self.p2Card5.configure(image =img)
+                        self.p2Card5.image = img
+
+
+
     def turnProgression(self):
-        if(self.turnCount > 3):
+        if(self.turnCount > 5):
             print("end")
             self.endGame()
-        self.phase += 1
-        if (self.phase > 0 and self.p1Turn == True):
+        if (self.turnCount >= 1):
+            self.drawPhase()
+        if ( self.p1Turn == True):
             self.p1Turn = False
-        elif(self.phase > 0 and self.p1Turn == False):
             self.turnCount += 1
             self.turnNum.configure(text = f"{"Player 1" if self.p1Turn else "Player 2"}\nTurn {self.turnCount}")
+        elif(self.p1Turn == False):
             self.p1Turn = True
+            self.turnCount += 1
+            self.turnNum.configure(text = f"{"Player 1" if self.p1Turn else "Player 2"}\nTurn {self.turnCount}")
+           
 
     def handManager(self, isP1Turn, handslot):
         img = PhotoImage(file = "physical-tcg/images/default.png")
@@ -423,6 +476,7 @@ class MainGUI(Frame):
                     self.handManager(isP1Turn, handslot)
                 except:
                     print("no monster card here")
+        return ""
         
     def playLane(self,isP1Turn, handslot, lane):
         if (self.p1hand[handslot].name == "default" and isP1Turn == True):
@@ -433,9 +487,12 @@ class MainGUI(Frame):
             return ""
         if(self.p1hand[handslot].type == "spell"):
             self.playSpell(isP1Turn, handslot, lane)
-
+        if(self.playedMonster == True):
+            print("already played a monster this turn")
+            return ""
+        self.playedMonster = True
         if(lane == 1):
-            if (isP1Turn == True):
+            if (isP1Turn == True and len(self.p1Lane1) < 1):
                 self.p1Lane1.append(self.p1hand[handslot])
                 self.p1hand.pop(handslot)
                 self.p1hand.insert(handslot, Cards("default"))
@@ -443,7 +500,7 @@ class MainGUI(Frame):
                 img = PhotoImage(file = self.p1Lane1[0].imagefile)
                 self.player1Lane1.configure(image =img)
                 self.player1Lane1.image = img
-            if (isP1Turn == False):
+            if (isP1Turn == False and len(self.p2Lane1) < 1):
                 self.p2Lane1.append(self.p2hand[handslot])
                 self.p2hand.pop(handslot)
                 self.p2hand.insert(handslot, Cards("default"))
@@ -452,7 +509,7 @@ class MainGUI(Frame):
                 self.player2Lane1.configure(image =img)
                 self.player2Lane1.image = img
         elif(lane == 2):
-            if (isP1Turn == True):
+            if (isP1Turn == True and len(self.p1Lane2) < 1):
                 self.p1Lane2.append(self.p1hand[handslot])
                 self.p1hand.pop(handslot)
                 self.p1hand.insert(handslot, Cards("default"))
@@ -460,7 +517,7 @@ class MainGUI(Frame):
                 img = PhotoImage(file = self.p1Lane2[0].imagefile)
                 self.player1Lane2.configure(image =img)
                 self.player1Lane2.image = img
-            if (isP1Turn == False):
+            if (isP1Turn == False and len(self.p2Lane2) < 1):
                 self.p2Lane2.append(self.p2hand[handslot])
                 self.p2hand.pop(handslot)
                 self.p2hand.insert(handslot, Cards("default"))
@@ -468,7 +525,7 @@ class MainGUI(Frame):
                 img = PhotoImage(file = self.p2Lane2[0].imagefile)
                 self.player2Lane2.configure(image =img)
                 self.player2Lane2.image = img
-        elif(lane ==3):    
+        elif(lane ==3 and len(self.p1Lane3) < 1):    
             if (isP1Turn == True):
                 self.p1Lane3.append(self.p1hand[handslot])
                 self.p1hand.pop(handslot)
@@ -477,7 +534,7 @@ class MainGUI(Frame):
                 img = PhotoImage(file = self.p1Lane3[0].imagefile)
                 self.player1Lane3.configure(image =img)
                 self.player1Lane3.image = img
-            if (isP1Turn == False):
+            if (isP1Turn == False and len(self.p2Lane3) < 1):
                 self.p2Lane3.append(self.p2hand[handslot])
                 self.p2hand.pop(handslot)
                 self.p2hand.insert(handslot, Cards("default"))
@@ -487,8 +544,19 @@ class MainGUI(Frame):
                 self.player2Lane3.image = img
 
     def endGame(self):
-        p1Points = self.p1Lane1[0] + self.p1Lane2[0] + self.p1Lane3[0].power
-        p2Points = self.p2Lane1[0] + self.p2Lane2[0] + self.p2Lane3[0].power
+        def f(x):
+            length = len(x)
+            return(length > 0)
+        p1Powers = [self.p1Lane1, self.p1Lane2, self.p1Lane3]
+        listOfP1Power = list(filter(f, p1Powers))
+        print(listOfP1Power)
+        p1Points = sum(listOfP1Power)
+
+        p2Powers = [self.p2Lane1, self.p2Lane2, self.p2Lane3]
+        listOfP2Power = list(filter(f, p2Powers))
+        
+        p2Points = sum(listOfP2Power)    
+            
         if(p1Points > p2Points):
             print(f"Player 1 won {p1Points} to {p2Points}")
         elif(p1Points < p2Points):
