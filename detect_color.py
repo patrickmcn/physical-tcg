@@ -93,3 +93,5 @@ def detectColor():
         key = cv2.waitKey(1)
         if key == ord('q'):
             break
+
+print(detectColor())
