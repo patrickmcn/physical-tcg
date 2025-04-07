@@ -1,6 +1,7 @@
 import os
 from tkinter import *
 import random
+import time
 from detect_color import detectColor
 class Cards:
     def __init__(self, name = "test", power = 0, type = "monster"):
@@ -73,8 +74,11 @@ class Cards:
 class Deck:
     def __init__(self):
         self.cards = []
-        for num in range(0,10):
-            self.cards.append(Cards())
+        cards = [1, 2, 3, 4, 5] 
+        #self.cards.append(Cards("test", 2, "spell"))
+        for num in range(11):
+            items = random.choice(cards)
+            self.cards.append(Cards(f"test{items}", items))
 
     @property
     def cards (self):
@@ -100,9 +104,11 @@ class Deck2(Deck):
     def __init__(self):
         super().__init__()
         self.cards = []
-        self.cards.append(Cards("test", 2, "spell"))
-        for num in range(0,10):
-            self.cards.append(Cards("test3", 3))
+        cards = [1, 2, 3, 4, 5] 
+        #self.cards.append(Cards("test", 2, "spell"))
+        for num in range(11):
+            items = random.choice(cards)
+            self.cards.append(Cards(f"test{items}", items))
 
 class MainGUI(Frame):
     def __init__(self, parent):
@@ -439,7 +445,7 @@ class MainGUI(Frame):
                     self.handManager(isP1Turn, handslot)
                 except:
                     print("no monster card here")
-                    self.display
+                    self.display.configure(text = "no monster card here")
             if(lane == 2):
                 try:
                     self.p1Lane2[0].power += self.p1hand[handslot].power
@@ -448,6 +454,7 @@ class MainGUI(Frame):
                     self.handManager(isP1Turn, handslot)
                 except:
                     print("no monster card here")
+                    self.display.configure(text = "no monster card here")
             if(lane == 3):
                 try:
                     self.p1Lane3[0].power += self.p1hand[handslot].power
@@ -456,6 +463,7 @@ class MainGUI(Frame):
                     self.handManager(isP1Turn, handslot)
                 except:
                     print("no monster card here")
+                    self.display.configure(text = "no monster card here")
         if(isP1Turn == False):
             if(lane == 1):
                 try:
@@ -465,6 +473,7 @@ class MainGUI(Frame):
                     self.handManager(isP1Turn, handslot)
                 except:
                     print("no monster card here")
+                    self.display.configure(text = "no monster card here")
             if(lane == 2):
                 try:
                     self.p2Lane2[0].power += self.p1hand[handslot].power
@@ -473,6 +482,7 @@ class MainGUI(Frame):
                     self.handManager(isP1Turn, handslot)
                 except:
                     print("no monster card here")
+                    self.display.configure(text = "no monster card here")
             if(lane == 3):
                 try:
                     self.p2Lane3[0].power += self.p1hand[handslot].power
@@ -481,19 +491,23 @@ class MainGUI(Frame):
                     self.handManager(isP1Turn, handslot)
                 except:
                     print("no monster card here")
+                    self.display.configure(text = "no monster card here")
         return ""
         
     def playLane(self,isP1Turn, handslot, lane):
         if (self.p1hand[handslot].name == "default" and isP1Turn == True):
             print("no card here")
+            self.display.configure(text = "no card here")
             return ""
         if (self.p2hand[handslot].name == "default" and isP1Turn == False):
             print("no card here")
+            self.display.configure(text = "no card here")
             return ""
         if(self.p1hand[handslot].type == "spell"):
             self.playSpell(isP1Turn, handslot, lane)
         if(self.playedMonster == True):
             print("already played a monster this turn")
+            self.display.configure(text = "already played a monster this turn")
             return ""
         self.playedMonster = True
         if(lane == 1):
@@ -563,7 +577,7 @@ class MainGUI(Frame):
         except:
             pass
         
-        print(listOfP1Power)
+        #print(listOfP1Power)
         p1Points = sum(listOfP1Power)
 
         listOfP2Power = []
@@ -580,15 +594,21 @@ class MainGUI(Frame):
         except:
             pass
         
-        print(listOfP2Power)
+        #print(listOfP2Power)
         p2Points = sum(listOfP2Power)    
             
         if(p1Points > p2Points):
             print(f"Player 1 won {p1Points} to {p2Points}")
+            self.display.configure(text = f"Player 1 won {p1Points} to {p2Points}")
+            
         elif(p1Points < p2Points):
             print(f"Player 2 won {p2Points} to {p1Points}")
+            self.display.configure(text = f"Player 2 won {p2Points} to {p1Points}")
         else:
             print("You Tied")
+            self.display.configure(text = "You Tied")
+        #self.display.configure(text=)
+        #time.sleep(2)
         self.quit()
 
 
