@@ -1,6 +1,7 @@
 import os
 from tkinter import *
 import random
+from detect_color import detectColor
 class Cards:
     def __init__(self, name = "test", power = 0, type = "monster"):
         self.name = name
@@ -134,9 +135,9 @@ class MainGUI(Frame):
         for i in range(5):
             self.putInHand(1)
             self.putInHand(2)
-        print(self.p1hand)
-        print(self.p2hand)
-        for row in range(4):
+        #print(self.p1hand)
+        #print(self.p2hand)
+        for row in range(5):
             Grid.rowconfigure(self, row, weight = 1)
             
             for col in range(4):
@@ -323,6 +324,9 @@ class MainGUI(Frame):
         self.p1Card5.menu.add_command(label= " Lane 2", command= lambda: self.playLane(self.p1Turn, 4, 2) )
         self.p1Card5.menu.add_command(label= " Lane 3", command= lambda: self.playLane(self.p1Turn, 4, 3) )
 
+        self.display = Label(self, text = "test", anchor = "center")
+        self.display.grid(row = 3, column = 0 )
+
         self.pack(side = "bottom",fill = BOTH, expand = 1)
     
     def drawPhase(self):
@@ -376,7 +380,7 @@ class MainGUI(Frame):
 
     def turnProgression(self):
         if(self.turnCount > 5):
-            print("end")
+            #print("end")
             self.endGame()
         if (self.turnCount >= 1):
             self.drawPhase()
@@ -429,15 +433,16 @@ class MainGUI(Frame):
         if(isP1Turn):
             if(lane == 1):
                 try:
-                    self.p1Lane1[0].power + self.p1hand[handslot].power
+                    self.p1Lane1[0].power += self.p1hand[handslot].power
                     self.p1hand.pop(handslot)
                     self.p1hand.insert(handslot, Cards("default"))
                     self.handManager(isP1Turn, handslot)
                 except:
                     print("no monster card here")
+                    self.display
             if(lane == 2):
                 try:
-                    self.p1Lane2[0].power + self.p1hand[handslot].power
+                    self.p1Lane2[0].power += self.p1hand[handslot].power
                     self.p1hand.pop(handslot)
                     self.p1hand.insert(handslot, Cards("default"))
                     self.handManager(isP1Turn, handslot)
@@ -445,7 +450,7 @@ class MainGUI(Frame):
                     print("no monster card here")
             if(lane == 3):
                 try:
-                    self.p1Lane3[0].power + self.p1hand[handslot].power
+                    self.p1Lane3[0].power += self.p1hand[handslot].power
                     self.p1hand.pop(handslot)
                     self.p1hand.insert(handslot, Cards("default"))
                     self.handManager(isP1Turn, handslot)
@@ -454,7 +459,7 @@ class MainGUI(Frame):
         if(isP1Turn == False):
             if(lane == 1):
                 try:
-                    self.p2Lane1[0].power + self.p1hand[handslot].power
+                    self.p2Lane1[0].power += self.p1hand[handslot].power
                     self.p2hand.pop(handslot)
                     self.p2hand.insert(handslot, Cards("default"))
                     self.handManager(isP1Turn, handslot)
@@ -462,7 +467,7 @@ class MainGUI(Frame):
                     print("no monster card here")
             if(lane == 2):
                 try:
-                    self.p2Lane2[0].power + self.p1hand[handslot].power
+                    self.p2Lane2[0].power += self.p1hand[handslot].power
                     self.p2hand.pop(handslot)
                     self.p2hand.insert(handslot, Cards("default"))
                     self.handManager(isP1Turn, handslot)
@@ -470,7 +475,7 @@ class MainGUI(Frame):
                     print("no monster card here")
             if(lane == 3):
                 try:
-                    self.p2Lane3[0].power + self.p1hand[handslot].power
+                    self.p2Lane3[0].power += self.p1hand[handslot].power
                     self.p2hand.pop(handslot)
                     self.p2hand.insert(handslot, Cards("default"))
                     self.handManager(isP1Turn, handslot)
@@ -544,17 +549,38 @@ class MainGUI(Frame):
                 self.player2Lane3.image = img
 
     def endGame(self):
-        def f(x):
-            length = len(x)
-            return(length > 0)
-        p1Powers = [self.p1Lane1, self.p1Lane2, self.p1Lane3]
-        listOfP1Power = list(filter(f, p1Powers))
+        listOfP1Power = []
+        try:
+            listOfP1Power.append(self.p1Lane1[0].power)
+        except:
+            pass
+        try:
+            listOfP1Power.append(self.p1Lane2[0].power)
+        except:
+            pass
+        try:
+            listOfP1Power.append(self.p1Lane3[0].power)
+        except:
+            pass
+        
         print(listOfP1Power)
         p1Points = sum(listOfP1Power)
 
-        p2Powers = [self.p2Lane1, self.p2Lane2, self.p2Lane3]
-        listOfP2Power = list(filter(f, p2Powers))
+        listOfP2Power = []
+        try:
+            listOfP2Power.append(self.p2Lane1[0].power)
+        except:
+            pass
+        try:
+            listOfP2Power.append(self.p2Lane2[0].power)
+        except:
+            pass
+        try:
+            listOfP2Power.append(self.p2Lane3[0].power)
+        except:
+            pass
         
+        print(listOfP2Power)
         p2Points = sum(listOfP2Power)    
             
         if(p1Points > p2Points):
