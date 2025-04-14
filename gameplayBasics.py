@@ -75,7 +75,7 @@ class Deck:
     def __init__(self):
         self.cards = []
         cards = [1, 2, 3, 4, 5] 
-        #self.cards.append(Cards("test", 2, "spell"))
+        self.cards.append(Cards("test", 2, "spell"))
         for num in range(11):
             items = random.choice(cards)
             self.cards.append(Cards(f"test{items}", items))
@@ -500,29 +500,38 @@ class MainGUI(Frame):
         if (turnCheck == 2 and isP1Turn == True):
             self.display.configure(text = "you cant play P2 cards on P1's turn")
             return ""
+        
         elif(turnCheck == 1 and isP1Turn == False):
             self.display.configure(text = "you cant play P1 cards on P2's turn")
             return ""
+        
         if (self.p1hand[handslot].name == "default" and isP1Turn == True):
             print("no card here")
             self.display.configure(text = "no card here")
             return ""
+        
         if (self.p2hand[handslot].name == "default" and isP1Turn == False):
             print("no card here")
             self.display.configure(text = "no card here")
             return ""
-        if(self.p1hand[handslot].type == "spell"):
+        
+        if(self.p1hand[handslot].type == "spell" and turnCheck == 1):
             self.playSpell(isP1Turn, handslot, lane)
+            return ""
+        
         if(len(self.listofP1Locations[lane - 1]) >= 1 and turnCheck == 1):
             self.display.configure(text = "There is already a card here play somewhere else")
             return ""
+        
         if(len(self.listofP2Locations[lane - 1]) >= 1 and turnCheck == 2):
             self.display.configure(text = "There is already a card here play somewhere else")
             return ""
+        
         if(self.playedMonster == True):
             print("already played a monster this turn")
             self.display.configure(text = "already played a monster this turn")
             return ""
+        
         self.playedMonster = True
         if(lane == 1):
             if (isP1Turn == True and len(self.p1Lane1) < 1):
@@ -558,8 +567,8 @@ class MainGUI(Frame):
                 img = PhotoImage(file = self.p2Lane2[0].imagefile)
                 self.player2Lane2.configure(image =img)
                 self.player2Lane2.image = img
-        elif(lane ==3 and len(self.p1Lane3) < 1):    
-            if (isP1Turn == True):
+        elif(lane ==3):    
+            if (isP1Turn == True and len(self.p1Lane3) < 1):
                 self.p1Lane3.append(self.p1hand[handslot])
                 self.p1hand.pop(handslot)
                 self.p1hand.insert(handslot, Cards("default"))
