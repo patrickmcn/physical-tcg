@@ -75,7 +75,7 @@ class Deck:
     def __init__(self):
         self.cards = []
         cards = [1, 2, 3, 4, 5] 
-        #self.cards.append(Cards("test", 2, "spell"))
+        self.cards.append(Cards("test", 2, "spell"))
         for num in range(11):
             items = random.choice(cards)
             self.cards.append(Cards(f"test{items}", items))
@@ -127,6 +127,8 @@ class MainGUI(Frame):
         self.p1Turn = True
         self.turnCount = 1
         self.playedMonster = False
+        self.listofP1Locations = [self.p1Lane1, self.p1Lane2, self.p1Lane3]
+        self.listofP2Locations = [self.p2Lane1, self.p2Lane2, self.p2Lane3]
         self.setUpGUI()
 
     def putInHand(self, whoseturn):
@@ -158,9 +160,9 @@ class MainGUI(Frame):
         self.p2Card1.menu =Menu(self.p2Card1, tearoff=0)
         self.p2Card1["menu"] = self.p2Card1.menu
 
-        self.p2Card1.menu.add_command(label= " Lane 1", command= lambda: self.playLane(self.p1Turn, 0, 1) )
-        self.p2Card1.menu.add_command(label= " Lane 2", command= lambda: self.playLane(self.p1Turn, 0, 2) )
-        self.p2Card1.menu.add_command(label= " Lane 3", command= lambda: self.playLane(self.p1Turn, 0, 3) )
+        self.p2Card1.menu.add_command(label= " Lane 1", command= lambda: self.playLane(self.p1Turn, 0, 1, 2) )
+        self.p2Card1.menu.add_command(label= " Lane 2", command= lambda: self.playLane(self.p1Turn, 0, 2, 2) )
+        self.p2Card1.menu.add_command(label= " Lane 3", command= lambda: self.playLane(self.p1Turn, 0, 3, 2) )
 
         p2c2 = self.p2hand[1].imagefile
         img = PhotoImage(file = p2c2)
@@ -171,9 +173,9 @@ class MainGUI(Frame):
         self.p2Card2.menu = Menu(self.p2Card2, tearoff= 0)
         self.p2Card2["menu"] = self.p2Card2.menu
 
-        self.p2Card2.menu.add_command(label= " Lane 1", command= lambda: self.playLane(self.p1Turn, 1, 1) )
-        self.p2Card2.menu.add_command(label= " Lane 2", command= lambda: self.playLane(self.p1Turn, 1, 2) )
-        self.p2Card2.menu.add_command(label= " Lane 3", command= lambda: self.playLane(self.p1Turn, 1, 3) )
+        self.p2Card2.menu.add_command(label= " Lane 1", command= lambda: self.playLane(self.p1Turn, 1, 1, 2) )
+        self.p2Card2.menu.add_command(label= " Lane 2", command= lambda: self.playLane(self.p1Turn, 1, 2, 2) )
+        self.p2Card2.menu.add_command(label= " Lane 3", command= lambda: self.playLane(self.p1Turn, 1, 3, 2) )
 
         p2c3 = self.p2hand[2].imagefile
         img = PhotoImage(file = p2c3)
@@ -184,9 +186,9 @@ class MainGUI(Frame):
         self.p2Card3.menu =Menu(self.p2Card3, tearoff=0)
         self.p2Card3["menu"] = self.p2Card3.menu
 
-        self.p2Card3.menu.add_command(label= " Lane 1", command= lambda: self.playLane(self.p1Turn, 2, 1) )
-        self.p2Card3.menu.add_command(label= " Lane 2", command= lambda: self.playLane(self.p1Turn, 2, 2) )
-        self.p2Card3.menu.add_command(label= " Lane 3", command= lambda: self.playLane(self.p1Turn, 2, 3) )
+        self.p2Card3.menu.add_command(label= " Lane 1", command= lambda: self.playLane(self.p1Turn, 2, 1, 2) )
+        self.p2Card3.menu.add_command(label= " Lane 2", command= lambda: self.playLane(self.p1Turn, 2, 2, 2) )
+        self.p2Card3.menu.add_command(label= " Lane 3", command= lambda: self.playLane(self.p1Turn, 2, 3, 2) )
 
         p2c4 = self.p2hand[3].imagefile
         img = PhotoImage(file = p2c4)
@@ -197,9 +199,9 @@ class MainGUI(Frame):
         self.p2Card4.menu =Menu(self.p2Card4, tearoff=0)
         self.p2Card4["menu"] = self.p2Card4.menu
 
-        self.p2Card4.menu.add_command(label= " Lane 1", command= lambda: self.playLane(self.p1Turn, 3, 1) )
-        self.p2Card4.menu.add_command(label= " Lane 2", command= lambda: self.playLane(self.p1Turn, 3, 2) )
-        self.p2Card4.menu.add_command(label= " Lane 3", command= lambda: self.playLane(self.p1Turn, 3, 3) )
+        self.p2Card4.menu.add_command(label= " Lane 1", command= lambda: self.playLane(self.p1Turn, 3, 1, 2) )
+        self.p2Card4.menu.add_command(label= " Lane 2", command= lambda: self.playLane(self.p1Turn, 3, 2, 2) )
+        self.p2Card4.menu.add_command(label= " Lane 3", command= lambda: self.playLane(self.p1Turn, 3, 3, 2) )
 
         p2c5 = self.p2hand[4].imagefile
         img = PhotoImage(file = p2c5)
@@ -210,9 +212,9 @@ class MainGUI(Frame):
         self.p2Card5.menu =Menu(self.p2Card5, tearoff=0)
         self.p2Card5["menu"] = self.p2Card5.menu
 
-        self.p2Card5.menu.add_command(label= " Lane 1", command= lambda: self.playLane(self.p1Turn, 4, 1) )
-        self.p2Card5.menu.add_command(label= " Lane 2", command= lambda: self.playLane(self.p1Turn, 4, 2) )
-        self.p2Card5.menu.add_command(label= " Lane 3", command= lambda: self.playLane(self.p1Turn, 4, 3) )
+        self.p2Card5.menu.add_command(label= " Lane 1", command= lambda: self.playLane(self.p1Turn, 4, 1, 2) )
+        self.p2Card5.menu.add_command(label= " Lane 2", command= lambda: self.playLane(self.p1Turn, 4, 2, 2) )
+        self.p2Card5.menu.add_command(label= " Lane 3", command= lambda: self.playLane(self.p1Turn, 4, 3, 2) )
 
         p2l1 = "physical-tcg/images/p2l1.png"
         img = PhotoImage(file= p2l1)
@@ -274,9 +276,9 @@ class MainGUI(Frame):
         self.p1Card1.menu =Menu(self.p1Card1, tearoff=0)
         self.p1Card1["menu"] = self.p1Card1.menu
 
-        self.p1Card1.menu.add_command(label= " Lane 1", command= lambda: self.playLane(self.p1Turn, 0, 1) )
-        self.p1Card1.menu.add_command(label= " Lane 2", command= lambda: self.playLane(self.p1Turn, 0, 2) )
-        self.p1Card1.menu.add_command(label= " Lane 3", command= lambda: self.playLane(self.p1Turn, 0, 3) )
+        self.p1Card1.menu.add_command(label= " Lane 1", command= lambda: self.playLane(self.p1Turn, 0, 1, 1) )
+        self.p1Card1.menu.add_command(label= " Lane 2", command= lambda: self.playLane(self.p1Turn, 0, 2, 1) )
+        self.p1Card1.menu.add_command(label= " Lane 3", command= lambda: self.playLane(self.p1Turn, 0, 3, 1) )
 
         p1c2 = self.p1hand[1].imagefile
         img = PhotoImage(file = p1c2)
@@ -287,9 +289,9 @@ class MainGUI(Frame):
         self.p1Card2.menu =Menu(self.p1Card2, tearoff=0)
         self.p1Card2["menu"] = self.p1Card2.menu
 
-        self.p1Card2.menu.add_command(label= " Lane 1", command= lambda: self.playLane(self.p1Turn, 1, 1) )
-        self.p1Card2.menu.add_command(label= " Lane 2", command= lambda: self.playLane(self.p1Turn, 1, 2) )
-        self.p1Card2.menu.add_command(label= " Lane 3", command= lambda: self.playLane(self.p1Turn, 1, 3) )
+        self.p1Card2.menu.add_command(label= " Lane 1", command= lambda: self.playLane(self.p1Turn, 1, 1, 1) )
+        self.p1Card2.menu.add_command(label= " Lane 2", command= lambda: self.playLane(self.p1Turn, 1, 2, 1) )
+        self.p1Card2.menu.add_command(label= " Lane 3", command= lambda: self.playLane(self.p1Turn, 1, 3, 1) )
 
         p1c3 = self.p1hand[2].imagefile
         img = PhotoImage(file = p1c3)
@@ -300,9 +302,9 @@ class MainGUI(Frame):
         self.p1Card3.menu =Menu(self.p1Card3, tearoff=0)
         self.p1Card3["menu"] = self.p1Card3.menu
 
-        self.p1Card3.menu.add_command(label= " Lane 1", command= lambda: self.playLane(self.p1Turn, 2, 1) )
-        self.p1Card3.menu.add_command(label= " Lane 2", command= lambda: self.playLane(self.p1Turn, 2, 2) )
-        self.p1Card3.menu.add_command(label= " Lane 3", command= lambda: self.playLane(self.p1Turn, 2, 3) )
+        self.p1Card3.menu.add_command(label= " Lane 1", command= lambda: self.playLane(self.p1Turn, 2, 1, 1) )
+        self.p1Card3.menu.add_command(label= " Lane 2", command= lambda: self.playLane(self.p1Turn, 2, 2, 1) )
+        self.p1Card3.menu.add_command(label= " Lane 3", command= lambda: self.playLane(self.p1Turn, 2, 3, 1) )
 
         p1c4 = self.p1hand[3].imagefile
         img = PhotoImage(file = p1c4)
@@ -313,9 +315,9 @@ class MainGUI(Frame):
         self.p1Card4.menu =Menu(self.p1Card4, tearoff=0)
         self.p1Card4["menu"] = self.p1Card4.menu
 
-        self.p1Card4.menu.add_command(label= " Lane 1", command= lambda: self.playLane(self.p1Turn, 3, 1) )
-        self.p1Card4.menu.add_command(label= " Lane 2", command= lambda: self.playLane(self.p1Turn, 3, 2) )
-        self.p1Card4.menu.add_command(label= " Lane 3", command= lambda: self.playLane(self.p1Turn, 3, 3) )
+        self.p1Card4.menu.add_command(label= " Lane 1", command= lambda: self.playLane(self.p1Turn, 3, 1, 1) )
+        self.p1Card4.menu.add_command(label= " Lane 2", command= lambda: self.playLane(self.p1Turn, 3, 2, 1) )
+        self.p1Card4.menu.add_command(label= " Lane 3", command= lambda: self.playLane(self.p1Turn, 3, 3, 1) )
 
         p1c5 = self.p1hand[4].imagefile
         img = PhotoImage(file = p1c5)
@@ -326,9 +328,9 @@ class MainGUI(Frame):
         self.p1Card5.menu =Menu(self.p1Card5, tearoff=0)
         self.p1Card5["menu"] = self.p1Card5.menu
 
-        self.p1Card5.menu.add_command(label= " Lane 1", command= lambda: self.playLane(self.p1Turn, 4, 1) )
-        self.p1Card5.menu.add_command(label= " Lane 2", command= lambda: self.playLane(self.p1Turn, 4, 2) )
-        self.p1Card5.menu.add_command(label= " Lane 3", command= lambda: self.playLane(self.p1Turn, 4, 3) )
+        self.p1Card5.menu.add_command(label= " Lane 1", command= lambda: self.playLane(self.p1Turn, 4, 1, 1) )
+        self.p1Card5.menu.add_command(label= " Lane 2", command= lambda: self.playLane(self.p1Turn, 4, 2, 1) )
+        self.p1Card5.menu.add_command(label= " Lane 3", command= lambda: self.playLane(self.p1Turn, 4, 3, 1) )
 
         self.display = Label(self, text = "test", anchor = "center")
         self.display.grid(row = 3, column = 0 )
@@ -494,21 +496,42 @@ class MainGUI(Frame):
                     self.display.configure(text = "no monster card here")
         return ""
         
-    def playLane(self,isP1Turn, handslot, lane):
+    def playLane(self,isP1Turn, handslot, lane, turnCheck):
+        if (turnCheck == 2 and isP1Turn == True):
+            self.display.configure(text = "you cant play P2 cards on P1's turn")
+            return ""
+        
+        elif(turnCheck == 1 and isP1Turn == False):
+            self.display.configure(text = "you cant play P1 cards on P2's turn")
+            return ""
+        
         if (self.p1hand[handslot].name == "default" and isP1Turn == True):
             print("no card here")
             self.display.configure(text = "no card here")
             return ""
+        
         if (self.p2hand[handslot].name == "default" and isP1Turn == False):
             print("no card here")
             self.display.configure(text = "no card here")
             return ""
-        if(self.p1hand[handslot].type == "spell"):
+        
+        if(self.p1hand[handslot].type == "spell" and turnCheck == 1):
             self.playSpell(isP1Turn, handslot, lane)
+            return ""
+        
+        if(len(self.listofP1Locations[lane - 1]) >= 1 and turnCheck == 1):
+            self.display.configure(text = "There is already a card here play somewhere else")
+            return ""
+        
+        if(len(self.listofP2Locations[lane - 1]) >= 1 and turnCheck == 2):
+            self.display.configure(text = "There is already a card here play somewhere else")
+            return ""
+        
         if(self.playedMonster == True):
             print("already played a monster this turn")
             self.display.configure(text = "already played a monster this turn")
             return ""
+        
         self.playedMonster = True
         if(lane == 1):
             if (isP1Turn == True and len(self.p1Lane1) < 1):
@@ -544,8 +567,8 @@ class MainGUI(Frame):
                 img = PhotoImage(file = self.p2Lane2[0].imagefile)
                 self.player2Lane2.configure(image =img)
                 self.player2Lane2.image = img
-        elif(lane ==3 and len(self.p1Lane3) < 1):    
-            if (isP1Turn == True):
+        elif(lane ==3):    
+            if (isP1Turn == True and len(self.p1Lane3) < 1):
                 self.p1Lane3.append(self.p1hand[handslot])
                 self.p1hand.pop(handslot)
                 self.p1hand.insert(handslot, Cards("default"))
