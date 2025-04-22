@@ -129,6 +129,9 @@ class MainGUI(Frame):
         self.playedMonster = False
         self.listofP1Locations = [self.p1Lane1, self.p1Lane2, self.p1Lane3]
         self.listofP2Locations = [self.p2Lane1, self.p2Lane2, self.p2Lane3]
+        self.round = 1
+        self.winners = []
+        self.winsNeeded = 2
         self.setUpGUI()
 
     def putInHand(self, whoseturn):
@@ -266,6 +269,9 @@ class MainGUI(Frame):
         self.player1Lane3 = Label(self, image= img)
         self.player1Lane3.image = img
         self.player1Lane3.grid(row = 3,column = 3)
+
+        self.roundLabel = Label(self, text = f"Best of {self.winsNeeded + 1}\nRound {self.round}")
+        self.roundLabel.grid(row = 3, column = 4 )
 
         p1c1 = self.p1hand[0].imagefile
         img = PhotoImage(file = p1c1)
@@ -585,6 +591,40 @@ class MainGUI(Frame):
                 self.player2Lane3.configure(image =img)
                 self.player2Lane3.image = img
 
+    def resetImages(self):
+        listOfLanes = [self.p1Lane1,self.p1Lane2,self.p1Lane3, self.p2Lane1, self.p2Lane2, self.p2Lane3]
+        listOfLaneImages = []
+        for player in range(1,3):
+            for i in range(1,4):
+                listOfLaneImages.append(f"physical-tcg/images/p{player}l{i}.png")
+        for i in range(0,7):
+            img = PhotoImage(file = listOfLaneImages[i])
+            listOfLanes[i].configure(image = img)
+            listOfLanes[i].image = img
+
+        
+
+    def roundReset(self):
+        self.round += 1
+        self.p1deck = Deck()
+        self.p2deck = Deck2()
+        self.p1hand = []
+        self.p2hand = []
+        self.p1Lane1 = []
+        self.p1Lane2 = []
+        self.p1Lane3 = []
+        self.p2Lane1 = []
+        self.p2Lane2 = []
+        self.p2Lane3 = []
+        self.phase = 0
+        self.p1Turn = True
+        self.turnCount = 1
+        self.playedMonster = False
+        self.roundLabel.configure(text = f"Best of {self.winsNeeded + 1}\nRound {self.round}")
+        self.turnNum.configure(text = f"{"Player 1" if self.p1Turn else "Player 2"}\nTurn {self.turnCount}")
+
+
+
     def endGame(self):
         listOfP1Power = []
         try:
@@ -621,18 +661,37 @@ class MainGUI(Frame):
         p2Points = sum(listOfP2Power)    
             
         if(p1Points > p2Points):
-            print(f"Player 1 won {p1Points} to {p2Points}")
-            self.display.configure(text = f"Player 1 won {p1Points} to {p2Points}")
+            print(f"Player 1 won round {self.round} {p1Points} to {p2Points}")
+            self.display.configure(text = f"Player 1 won round {self.round} {p1Points} to {p2Points}")
+            self.winners.append("P1win")
             
         elif(p1Points < p2Points):
-            print(f"Player 2 won {p2Points} to {p1Points}")
-            self.display.configure(text = f"Player 2 won {p2Points} to {p1Points}")
+            print(f"Player 2 won round {self.round} {p2Points} to {p1Points}")
+            self.display.configure(text = f"Player 2 won round {self.round} {p2Points} to {p1Points}")
+            self.winners.append("P2win")
         else:
-            print("You Tied")
-            self.display.configure(text = "You Tied")
+            print(f"You Tied round {self.round} with {p1Points} points")
+            self.display.configure(text = f"You Tied round {self.round} with {p1Points} points")
+            self.winners.append("Tie")
         #self.display.configure(text=)
         #time.sleep(2)
-        self.quit()
+        if(self.winners.count("P1win") == self.winsNeeded ):
+            print("P1 wins the game")
+            self.display.configure(text = "P1 wins the game")
+            time.sleep(3)
+            self.quit()
+        if(self.winners.count("P2win") == self.winsNeeded ):
+            print("P2 wins the game")
+            self.display.configure(text = "P2 wins the game")
+            time.sleep(3)
+            self.quit()
+        if(self.round > ((self.round * 2) - 1)):
+            print("Game ended in a tie")
+            self.display.configure(text = "Game ended in a tie")
+            time.sleep(3)
+            self.quit()
+        self.roundReset()
+        
 
 
         
