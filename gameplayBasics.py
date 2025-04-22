@@ -132,6 +132,7 @@ class MainGUI(Frame):
         self.round = 1
         self.winners = []
         self.winsNeeded = 2
+        self.roundResults = "Round Results:"
         self.setUpGUI()
 
     def putInHand(self, whoseturn):
@@ -236,6 +237,9 @@ class MainGUI(Frame):
         self.player2Lane3 = Label(self, image= img)
         self.player2Lane3.image = img
         self.player2Lane3.grid(row = 1,column = 3 )
+
+        self.winnersSoFar = Label(self, text = self.roundResults)
+        self.winnersSoFar.grid(row = 1, column = 4)
 
         self.turnNum= Label(self, text = f"{"Player 1" if self.p1Turn else "Player 2"}\nTurn {self.turnCount}")
         self.turnNum.grid(row = 2, column = 0)
@@ -396,6 +400,7 @@ class MainGUI(Frame):
         if(self.turnCount > 5):
             #print("end")
             self.endGame()
+            return ""
         if (self.turnCount >= 1):
             self.drawPhase()
         if ( self.p1Turn == True):
@@ -531,6 +536,8 @@ class MainGUI(Frame):
         
         if(len(self.listofP2Locations[lane - 1]) >= 1 and turnCheck == 2):
             self.display.configure(text = "There is already a card here play somewhere else")
+            print(len(self.listofP2Locations[lane - 1]))
+            print(self.listofP2Locations[lane - 1])
             return ""
         
         if(self.playedMonster == True):
@@ -591,17 +598,30 @@ class MainGUI(Frame):
                 self.player2Lane3.configure(image =img)
                 self.player2Lane3.image = img
 
-    def resetImages(self):
-        listOfLanes = [self.p1Lane1,self.p1Lane2,self.p1Lane3, self.p2Lane1, self.p2Lane2, self.p2Lane3]
+    def resetLanes(self):
+        listOfLanes = [self.player1Lane1, self.player1Lane2, self.player1Lane3, self.player2Lane1, self.player2Lane2, self.player2Lane3]
         listOfLaneImages = []
         for player in range(1,3):
             for i in range(1,4):
                 listOfLaneImages.append(f"physical-tcg/images/p{player}l{i}.png")
-        for i in range(0,7):
+        for i in range(0,6):
             img = PhotoImage(file = listOfLaneImages[i])
             listOfLanes[i].configure(image = img)
             listOfLanes[i].image = img
 
+    def resetHand(self):
+        for i in range(5):
+            self.putInHand(1)
+            self.putInHand(2)
+        listOfP1Hand = [self.p1Card1, self.p1Card2, self.p1Card3, self.p1Card4, self.p1Card5]
+        listOfP2Hand = [self.p2Card1, self.p2Card2, self.p2Card3, self.p2Card4, self.p2Card5]
+        for i in range (5):
+            img = PhotoImage(file = self.p1hand[i].imagefile )
+            listOfP1Hand[i].configure(image = img)
+            listOfP1Hand[i].image = img
+            img = PhotoImage(file = self.p2hand[i].imagefile )
+            listOfP2Hand[i].configure(image = img)
+            listOfP2Hand[i].image = img
         
 
     def roundReset(self):
@@ -610,18 +630,21 @@ class MainGUI(Frame):
         self.p2deck = Deck2()
         self.p1hand = []
         self.p2hand = []
-        self.p1Lane1 = []
-        self.p1Lane2 = []
-        self.p1Lane3 = []
-        self.p2Lane1 = []
-        self.p2Lane2 = []
-        self.p2Lane3 = []
+        self.p1Lane1.pop()
+        self.p1Lane2.pop()
+        self.p1Lane3.pop()
+        self.p2Lane1.pop()
+        self.p2Lane2.pop()
+        self.p2Lane3.pop()
         self.phase = 0
         self.p1Turn = True
         self.turnCount = 1
         self.playedMonster = False
         self.roundLabel.configure(text = f"Best of {self.winsNeeded + 1}\nRound {self.round}")
         self.turnNum.configure(text = f"{"Player 1" if self.p1Turn else "Player 2"}\nTurn {self.turnCount}")
+        self.resetLanes()
+        self.resetHand()
+
 
 
 
@@ -664,31 +687,35 @@ class MainGUI(Frame):
             print(f"Player 1 won round {self.round} {p1Points} to {p2Points}")
             self.display.configure(text = f"Player 1 won round {self.round} {p1Points} to {p2Points}")
             self.winners.append("P1win")
+            self.roundResults += f"\nRound {self.round}: P1"
+            self.winnersSoFar.configure(text = self.roundResults)
             
         elif(p1Points < p2Points):
             print(f"Player 2 won round {self.round} {p2Points} to {p1Points}")
             self.display.configure(text = f"Player 2 won round {self.round} {p2Points} to {p1Points}")
             self.winners.append("P2win")
+            self.roundResults += f"\nRound {self.round}: P2"
+            self.winnersSoFar.configure(text = self.roundResults)
+            
         else:
             print(f"You Tied round {self.round} with {p1Points} points")
             self.display.configure(text = f"You Tied round {self.round} with {p1Points} points")
             self.winners.append("Tie")
+            self.roundResults += f"\nRound {self.round}: Tie"
+            self.winnersSoFar.configure(text = self.roundResults)
         #self.display.configure(text=)
         #time.sleep(2)
         if(self.winners.count("P1win") == self.winsNeeded ):
             print("P1 wins the game")
             self.display.configure(text = "P1 wins the game")
-            time.sleep(3)
             self.quit()
         if(self.winners.count("P2win") == self.winsNeeded ):
             print("P2 wins the game")
             self.display.configure(text = "P2 wins the game")
-            time.sleep(3)
             self.quit()
         if(self.round > ((self.round * 2) - 1)):
             print("Game ended in a tie")
             self.display.configure(text = "Game ended in a tie")
-            time.sleep(3)
             self.quit()
         self.roundReset()
         
