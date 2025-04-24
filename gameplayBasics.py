@@ -2,13 +2,17 @@ import os
 from tkinter import *
 import random
 import time
-from detect_color import detectColor
+import detect_color
 class Cards:
-    def __init__(self, name = "test", power = 0, type = "monster"):
+    def __init__(self, name = "test", power = 0, type = "monster", color = None):
         self.name = name
         self.power = power
         self.imagefile = f"physical-tcg/images/{name}.png"
         self.type = type
+        if color is None:
+            self.color = "red" if type == "monster" else "blue"
+        else:
+            self.color = color
 
     @property
     def name(self):
@@ -42,6 +46,14 @@ class Cards:
             self._imagefile = value
         else:
             self._imagefile = "images/default.png"
+    
+    @property
+    def color(self):
+        return self._color
+    
+    @color.setter
+    def color(self, value):
+        self._color = value
 
     def __str__(self):
         return f"{self.name} has {self.power} power"
@@ -75,10 +87,10 @@ class Deck:
     def __init__(self):
         self.cards = []
         cards = [1, 2, 3, 4, 5] 
-        self.cards.append(Cards("test", 2, "spell"))
+        self.cards.append(Cards("test", 2, "spell", "blue"))
         for num in range(11):
-            items = random.choice(cards)
-            self.cards.append(Cards(f"test{items}", items))
+            power = random.choice(cards)
+            self.cards.append(Cards(f"test{power}", power, "monster"))
 
     @property
     def cards (self):
@@ -107,8 +119,8 @@ class Deck2(Deck):
         cards = [1, 2, 3, 4, 5] 
         #self.cards.append(Cards("test", 2, "spell"))
         for num in range(11):
-            items = random.choice(cards)
-            self.cards.append(Cards(f"test{items}", items))
+            power = random.choice(cards)
+            self.cards.append(Cards(f"test{power}", power, "monster"))
 
 class MainGUI(Frame):
     def __init__(self, parent):
@@ -167,6 +179,13 @@ class MainGUI(Frame):
         self.p2Card1.menu.add_command(label= " Lane 1", command= lambda: self.playLane(self.p1Turn, 0, 1, 2) )
         self.p2Card1.menu.add_command(label= " Lane 2", command= lambda: self.playLane(self.p1Turn, 0, 2, 2) )
         self.p2Card1.menu.add_command(label= " Lane 3", command= lambda: self.playLane(self.p1Turn, 0, 3, 2) )
+        scanP1Button = Button(self, text="Scan P1 Card", command=lambda: self.openScanDialog(1), font=("TkDefaultFont", 12))
+        scanP1Button.grid(row=1, column=0)  # Position as needed
+    
+        scanP2Button = Button(self, text="Scan P2 Card", command=lambda: self.openScanDialog(2), 
+                         font=("TkDefaultFont", 12))
+        scanP2Button.grid(row=1, column=4)  # Position as needed
+        
 
         p2c2 = self.p2hand[1].imagefile
         img = PhotoImage(file = p2c2)
@@ -244,16 +263,16 @@ class MainGUI(Frame):
         self.turnNum= Label(self, text = f"{"Player 1" if self.p1Turn else "Player 2"}\nTurn {self.turnCount}")
         self.turnNum.grid(row = 2, column = 0)
         
-        lane1 = Label(self, text = "Lane 1")
+        lane1 = Label(self, text = "Lane 1", font=("TkDefaultFont",40))
         lane1.grid(row = 2, column = 1 )
 
-        lane2 = Label(self, text = "Lane 2")
+        lane2 = Label(self, text = "Lane 2", font=("TkDefaultFont",40))
         lane2.grid(row = 2, column = 2 )
 
-        lane3 = Label(self, text = "Lane 3")
+        lane3 = Label(self, text = "Lane 3", font=("TkDefaultFont",40))
         lane3.grid(row = 2, column = 3 )
 
-        nextButton = Button(self, text = "Next Phase", command = lambda: self.turnProgression() )
+        nextButton = Button(self, text = "Next Phase", command = lambda: self.turnProgression(), font=("TkDefaultFont",20))
         nextButton.grid(row = 2, column = 4)
 
         p1l1 = "physical-tcg/images/p1l1.png"
@@ -597,6 +616,60 @@ class MainGUI(Frame):
                 img = PhotoImage(file = self.p2Lane3[0].imagefile)
                 self.player2Lane3.configure(image =img)
                 self.player2Lane3.image = img
+    
+    def scanCard(self, player, handPosition):
+        cardColor = detect_color.detectColor()
+        deck = self.p1deck if player == 1 else self.p2deck
+        hand = self.p1hand if player == 1 else self.p2hand
+        cardType = "monster" if cardColor == "red" else "spell"
+        match = [card for card in deck.cards if card.color == cardColor]
+        if match:
+            scannedCard = match[0]
+            deck.cards.remove(scannedCard)
+            oldCard = hand[handPosition]
+            hand[handPosition] = scannedCard
+            self.updateHandDisplay(player == 1, handPosition)
+            self.display.configure(text = f"Scanned {cardColor} {cardType} card: {scannedCard.name}")
+        else:
+            self.display.configure(text = f"No {cardColor} cards remaining in deck")
+
+    def updateHandDisplay(self, isP1Turn, handslot):
+        if isP1Turn:
+            card = self.p1hand[handslot]
+            img = PhotoImage(file=card.imagefile)
+            if handslot == 0:
+                self.p1Card1.configure(image=img)
+                self.p1Card1.image = img
+            elif handslot == 1:
+                self.p1Card2.configure(image=img)
+                self.p1Card2.image = img
+            elif handslot == 2:
+                self.p1Card3.configure(image=img)
+                self.p1Card3.image = img
+            elif handslot == 3:
+                self.p1Card4.configure(image=img)
+                self.p1Card4.image = img
+            elif handslot == 4:
+                self.p1Card5.configure(image=img)
+                self.p1Card5.image = img
+        else:
+            card = self.p2hand[handslot]
+            img = PhotoImage(file=card.imagefile)
+            if handslot == 0:
+                self.p2Card1.configure(image=img)
+                self.p2Card1.image = img
+            elif handslot == 1:
+                self.p2Card2.configure(image=img)
+                self.p2Card2.image = img
+            elif handslot == 2:
+                self.p2Card3.configure(image=img)
+                self.p2Card3.image = img
+            elif handslot == 3:
+                self.p2Card4.configure(image=img)
+                self.p2Card4.image = img
+            elif handslot == 4:
+                self.p2Card5.configure(image=img)
+                self.p2Card5.image = img
 
     def resetLanes(self):
         listOfLanes = [self.player1Lane1, self.player1Lane2, self.player1Lane3, self.player2Lane1, self.player2Lane2, self.player2Lane3]
