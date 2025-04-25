@@ -5,7 +5,7 @@ import time
 import detect_color
 from CardEffects import EnergyDrink, Caltrops, AndresEffect
 class Cards:
-    def __init__(self, name = "test", power = 0, type = "monster", color = None):
+    def __init__(self, name = "test", power = 0, type = "monster", color = None, effect = 0):
         self.name = name
         self.power = power
         self.imagefile = f"physical-tcg/images/{name}.png"
@@ -56,6 +56,12 @@ class Cards:
     @color.setter
     def color(self, value):
         self._color = value
+    @property
+    def effect(self):
+        return self._effect
+    @effect.setter
+    def effect(self, effect):
+        self._effect = effect
 
     def __str__(self):
         return f"{self.name} has {self.power} power"
@@ -469,21 +475,21 @@ class MainGUI(Frame):
                 self.p2Card5.image = img
 
     def playSpell(self,isP1Turn, handslot, lane):
-        card = self.p1hand[handslot] if isP1Turn else self.p2hand[handslot]
+        #card = self.p1hand[handslot] if isP1Turn else self.p2hand[handslot]
 
-        if card.effect == 1:
-            target = self.p1Lane1[0] if isP1Turn else self.p2Lane1[0]
-            EnergyDrink(target)
-        elif card.effect == 2:
-            target = self.p1Lane1[0] if isP1Turn else self.p2Lane[0]
-            Caltrops(target)
-        elif card.effect == 3:
-            currentLane = lane
-            currentPlayer = 0 if isP1Turn else 1
-            lanes = [self.p1Lane1, self.p1Lane2, self.p1Lane3, self.p2Lane1, self.p2Lane2, self.p2Lane3] 
-            AndresEffect(currentLane, currentPlayer, lanes)
-        else:
-            print("No effect applied.")
+       # if card.effect == 1:
+       #     target = self.p1Lane1[0] if isP1Turn else self.p2Lane1[0]
+        #    EnergyDrink(target)
+       # elif card.effect == 2:
+        #    target = self.p1Lane1[0] if isP1Turn else self.p2Lane[0]
+        #    Caltrops(target)
+      #  elif card.effect == 3:
+       #     currentLane = lane
+       #     currentPlayer = 0 if isP1Turn else 1
+       #     lanes = [self.p1Lane1, self.p1Lane2, self.p1Lane3, self.p2Lane1, self.p2Lane2, self.p2Lane3] 
+       #    AndresEffect(currentLane, currentPlayer, lanes)
+       # else:
+     #       print("No effect applied.")
         if(isP1Turn):
             if(lane == 1):
                 try:
