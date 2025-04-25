@@ -184,14 +184,17 @@ class MainGUI(Frame):
         self.p2Card1.menu =Menu(self.p2Card1, tearoff=0)
         self.p2Card1["menu"] = self.p2Card1.menu
 
+        buttonFrame = Frame(self)
+        buttonFrame.grid(row=1, column=0)
+
         self.p2Card1.menu.add_command(label= " Lane 1", command= lambda: self.playLane(self.p1Turn, 0, 1, 2) )
         self.p2Card1.menu.add_command(label= " Lane 2", command= lambda: self.playLane(self.p1Turn, 0, 2, 2) )
         self.p2Card1.menu.add_command(label= " Lane 3", command= lambda: self.playLane(self.p1Turn, 0, 3, 2) )
-        scanP1Button = Button(self, text="Scan P1 Card", command=lambda: self.openScanDialog(1), font=("TkDefaultFont", 18))
-        scanP1Button.grid(row=1, column=0)
+        scanP1Button = Button(buttonFrame, text="Scan P1 Card", command=lambda: self.openScanDialog(1), font=("TkDefaultFont", 18))
+        scanP1Button.pack(padx=5, pady=5)
     
-        scanP2Button = Button(self, text="Scan P2 Card", command=lambda: self.openScanDialog(2), font=("TkDefaultFont", 18))
-        scanP2Button.grid(row=1, column=4)
+        scanP2Button = Button(buttonFrame, text="Scan P2 Card", command=lambda: self.openScanDialog(2), font=("TkDefaultFont", 18))
+        scanP2Button.pack(padx=5, pady=5)
         
 
         p2c2 = self.p2hand[1].imagefile
