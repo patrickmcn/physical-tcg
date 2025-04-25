@@ -3,12 +3,14 @@ from tkinter import *
 import random
 import time
 import detect_color
+from CardEffects import EnergyDrink, Caltrops, AndresEffect
 class Cards:
     def __init__(self, name = "test", power = 0, type = "monster", color = None):
         self.name = name
         self.power = power
         self.imagefile = f"physical-tcg/images/{name}.png"
         self.type = type
+        self.effect = effect 
         if color is None:
             self.color = "red" if type == "monster" else "blue"
         else:
@@ -467,6 +469,21 @@ class MainGUI(Frame):
                 self.p2Card5.image = img
 
     def playSpell(self,isP1Turn, handslot, lane):
+        card = self.p1hand[handslot] if isP1Turn else self.p2hand[handslot]
+
+        if card.effect == 1:
+            target = self.p1Lane1[0] if isP1Turn else self.p2Lane1[0]
+            EnergyDrink(target)
+        elif card.effect == 2:
+            target = self.p1Lane1[0] if isP1Turn else self.p2Lane[0]
+            Caltrops(target)
+        elif card.effect == 3:
+            currentLane = lane
+            currentPlayer = 0 if isP1Turn else 1
+            lanes = [self.p1Lane1, self.p1Lane2, self.p1Lane3, self.p2Lane1, self.p2Lane2, self.p2Lane3] 
+            AndresEffect(currentLane, currentPlayer, lanes)
+        else:
+            print("No effect applied.")
         if(isP1Turn):
             if(lane == 1):
                 try:
@@ -799,8 +816,7 @@ class MainGUI(Frame):
             self.display.configure(text = "Game ended in a tie")
             self.quit()
         self.roundReset()
-        
-
+   
 
         
 
