@@ -371,8 +371,8 @@ class MainGUI(Frame):
         self.p1Card5.menu.add_command(label= " Lane 2", command= lambda: self.playLane(self.p1Turn, 4, 2, 1) )
         self.p1Card5.menu.add_command(label= " Lane 3", command= lambda: self.playLane(self.p1Turn, 4, 3, 1) )
 
-        #self.display = Label(self, text = "test", anchor = "center")
-        #self.display.grid(row = 3, column = 0 )
+        self.display = Label(self, text = "blank", anchor = "center")
+        self.display.grid(row = 3, column = 0 )
 
         self.pack(side = "bottom",fill = BOTH, expand = 1)
     
