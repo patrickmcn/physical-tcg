@@ -24,11 +24,6 @@ def detectColor():
             red_upper = np.array([180, 255, 255], np.uint8)
             red_mask = cv2.inRange(hsvFrame, red_lower, red_upper)
             
-            # Green color range and mask
-            green_lower = np.array([25, 52, 72], np.uint8) 
-            green_upper = np.array([102, 255, 255], np.uint8) 
-            green_mask = cv2.inRange(hsvFrame, green_lower, green_upper)
-
             # Blue color range and mask
             blue_lower = np.array([94, 80, 2], np.uint8) 
             blue_upper = np.array([120, 255, 255], np.uint8) 
@@ -39,10 +34,6 @@ def detectColor():
             # Dilates and masks red
             red_mask = cv2.dilate(red_mask, kernel)
             res_red = cv2.bitwise_and(frame, frame, mask = red_mask)
-
-            # Dilates and masks green
-            green_mask = cv2.dilate(green_mask, kernel)
-            res_green = cv2.bitwise_and(frame, frame, mask = green_mask)
 
             # Dilates and masks blue
             blue_mask = cv2.dilate(blue_mask, kernel)
@@ -59,21 +50,7 @@ def detectColor():
                     cv2.putText(frame, "RED", (x, y), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 0, 255))
                     time.sleep(3)
                     if area > 50000:
-                        return "RED"
-
-            # Creates green contour
-            contours, hierarchy = cv2.findContours(green_mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-            
-            for pic, contour in enumerate(contours):
-                area = cv2.contourArea(contour)
-                if area > 50000:
-                    x, y, w, h = cv2.boundingRect(contour)
-                    frame = cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-                    cv2.putText(frame, "GREEN", (x, y), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 0))
-                    time.sleep(3)
-                    if area > 50000:
-                        return "GREEN"
-                        
+                        return "red"
 
             # Creates blue contour
             contours, hierarchy = cv2.findContours(blue_mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -86,12 +63,12 @@ def detectColor():
                     cv2.putText(frame, "BLUE", (x, y), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (255, 0, 0))
                     time.sleep(3)
                     if area > 50000:
-                        return "BLUE"
+                        return "blue"
             
             # Displays output
             cv2.imshow('Card Scanner', frame)
         key = cv2.waitKey(1)
         if key == ord('q'):
             break
-
-print(detectColor())
+    cap.release()
+    cv2.destroyAllWindows()
