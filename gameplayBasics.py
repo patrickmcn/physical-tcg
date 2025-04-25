@@ -90,7 +90,7 @@ class Deck:
         self.cards.append(Cards("test", 2, "spell", "blue"))
         for num in range(11):
             power = random.choice(cards)
-            self.cards.append(Cards(f"test{power}", power, "monster"))
+            self.cards.append(Cards(f"test{power}", power, "monster", "red"))
 
     @property
     def cards (self):
@@ -120,7 +120,7 @@ class Deck2(Deck):
         #self.cards.append(Cards("test", 2, "spell"))
         for num in range(11):
             power = random.choice(cards)
-            self.cards.append(Cards(f"test{power}", power, "monster"))
+            self.cards.append(Cards(f"test{power}", power, "monster", "red"))
 
 class MainGUI(Frame):
     def __init__(self, parent):
@@ -179,12 +179,11 @@ class MainGUI(Frame):
         self.p2Card1.menu.add_command(label= " Lane 1", command= lambda: self.playLane(self.p1Turn, 0, 1, 2) )
         self.p2Card1.menu.add_command(label= " Lane 2", command= lambda: self.playLane(self.p1Turn, 0, 2, 2) )
         self.p2Card1.menu.add_command(label= " Lane 3", command= lambda: self.playLane(self.p1Turn, 0, 3, 2) )
-        scanP1Button = Button(self, text="Scan P1 Card", command=lambda: self.openScanDialog(1), font=("TkDefaultFont", 12))
-        scanP1Button.grid(row=1, column=0)  # Position as needed
+        scanP1Button = Button(self, text="Scan P1 Card", command=lambda: self.openScanDialog(1), font=("TkDefaultFont", 18))
+        scanP1Button.grid(row=1, column=0)
     
-        scanP2Button = Button(self, text="Scan P2 Card", command=lambda: self.openScanDialog(2), 
-                         font=("TkDefaultFont", 12))
-        scanP2Button.grid(row=1, column=4)  # Position as needed
+        scanP2Button = Button(self, text="Scan P2 Card", command=lambda: self.openScanDialog(2), font=("TkDefaultFont", 18))
+        scanP2Button.grid(row=1, column=4)
         
 
         p2c2 = self.p2hand[1].imagefile
@@ -670,6 +669,15 @@ class MainGUI(Frame):
             elif handslot == 4:
                 self.p2Card5.configure(image=img)
                 self.p2Card5.image = img
+
+    def openScanDialog(self, player):
+        dialog = Toplevel(self)
+        dialog.title(f"Scan Card")
+        Label(dialog, text = "Choose position to place scanned card:").pack(pady=5)
+
+        for i in range(5):
+            Button(dialog, text = f"Position {i + 1}", command = lambda pos = i: [self.scanCard(player, pos), dialog.destroy()]).pack(pady=2)
+        Button(dialog, text = "Cancel", command = dialog.destroy).pack(pady=5)
 
     def resetLanes(self):
         listOfLanes = [self.player1Lane1, self.player1Lane2, self.player1Lane3, self.player2Lane1, self.player2Lane2, self.player2Lane3]
