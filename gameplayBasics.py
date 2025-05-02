@@ -829,12 +829,12 @@ class MainGUI(Frame):
 
         
 
-        
-#create window
-window = Tk()
-#set window title 
-window.title("Card Test")
-#generate the GUI
-p = MainGUI(window)
-#display the gut and wait for user interaction
-window.mainloop()
+def gameScreen():
+    #create window
+    window = Tk()
+    #set window title 
+    window.title("Card Test")
+    #generate the GUI
+    p = MainGUI(window)
+    #display the gut and wait for user interaction
+    window.mainloop()
