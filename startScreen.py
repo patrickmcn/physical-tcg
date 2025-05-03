@@ -30,6 +30,6 @@ window2 = Tk()
 #set window title 
 window2.title("Start Screen")
 #generate the GUI
-p = StartGUI
+p = StartGUI(window2)
 #display the gut and wait for user interaction
 window2.mainloop()
