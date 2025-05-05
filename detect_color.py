@@ -1,6 +1,8 @@
 # Detects color using camera. Limited to 5 frames per second
 
 import numpy as np
+import os
+os.environ["OPENCV_VIDEOIO_MSMF_ENABLE_HW_TRANSFORMS"] = "0"
 import cv2
 import time
 

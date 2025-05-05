@@ -3,7 +3,7 @@ from tkinter import *
 import random
 import time
 import detect_color
-from CardEffects import EnergyDrink, Caltrops, AndresEffect
+from CardEffects import EnergyDrink, Caltrops, Disarm, Debilitate, Booster, Invigorate
 class Cards:
     def __init__(self, name = "test", power = 0, type = "monster", color = None, effect = 0):
         self.name = name
@@ -47,7 +47,7 @@ class Cards:
         if(os.path.isfile(value)):
             self._imagefile = value
         else:
-            self._imagefile = "images/default.png"
+            self._imagefile = "physical-tcg/images/default.png"
     
     @property
     def color(self):
@@ -90,6 +90,21 @@ class Cards:
     def __add__(self, other):
         combinedPower = self.power + other.power
         return combinedPower
+    
+    def applyEffect(self, target, currentLane, currentPlayer, lanes):
+        if self.effect == "EnergyDrink":
+            EnergyDrink(target)
+        elif self.effect == "Caltrops":
+            Caltrops(target)
+        elif self.effect == "Booster":
+            Booster(target)
+        elif self.effect == "Disarm":
+            Disarm(target) 
+        elif self.effect == "Debilitate":
+            Debilitate(target) 
+        elif self.effect == "Invigorate":
+            Invigorate(target) 
+
 
 class Deck:
     def __init__(self):
@@ -126,9 +141,32 @@ class Deck2(Deck):
         self.cards = []
         cards = [1, 2, 3, 4, 5] 
         #self.cards.append(Cards("test", 2, "spell"))
+        self.cards.append(Cards("spell06", 0, "spell", "blue", "EnergyDrink"))
+        self.cards.append(Cards("spell01", 0, "spell", "blue", "Caltrops"))
+        self.cards.append(Cards("spell04", 0, "spell", "blue", "Booster"))
+        self.cards.append(Cards("spell05", 0, "spell", "blue", "Invigorate"))
+        self.cards.append(Cards("spell03", 0, "spell", "blue", "Disarm"))
+        self.cards.append(Cards("spell02", 0, "spell", "blue", "Debilitate"))
+        self.cards.append(Cards("monster01", 2,  "monster", "red"))
+        self.cards.append(Cards("monster02", 3,  "monster", "red"))
+        self.cards.append(Cards("monster03", 3,  "monster", "red"))
+        self.cards.append(Cards("monster04", 5,  "monster", "red"))
+        self.cards.append(Cards("monster05", 4,  "monster", "red"))
+        self.cards.append(Cards("monster06", 3,  "monster", "red"))
+        self.cards.append(Cards("monster07", 4,  "monster", "red"))
+        self.cards.append(Cards("monster08", 4,  "monster", "red"))
+        self.cards.append(Cards("monster09", 4,  "monster", "red"))
+        self.cards.append(Cards("monster10", 4,  "monster", "red"))
+        self.cards.append(Cards("monster11", 2,  "monster", "red"))
+        self.cards.append(Cards("monster12", 2,  "monster", "red"))
+        self.cards.append(Cards("monster13", 4,  "monster", "red"))
+        self.cards.append(Cards("monster14", 2,  "monster", "red"))
+        self.cards.append(Cards("monster15", 4,  "monster", "red"))
+        
         for num in range(11):
             power = random.choice(cards)
             self.cards.append(Cards(f"test{power}", power, "monster", "red"))
+
 
 class MainGUI(Frame):
     def __init__(self, parent, roundsNeededToWin):
@@ -489,21 +527,6 @@ class MainGUI(Frame):
                 self.p2Card5.image = img
 
     def playSpell(self,isP1Turn, handslot, lane):
-        #card = self.p1hand[handslot] if isP1Turn else self.p2hand[handslot]
-
-       # if card.effect == 1:
-       #     target = self.p1Lane1[0] if isP1Turn else self.p2Lane1[0]
-        #    EnergyDrink(target)
-       # elif card.effect == 2:
-        #    target = self.p1Lane1[0] if isP1Turn else self.p2Lane[0]
-        #    Caltrops(target)
-      #  elif card.effect == 3:
-       #     currentLane = lane
-       #     currentPlayer = 0 if isP1Turn else 1
-       #     lanes = [self.p1Lane1, self.p1Lane2, self.p1Lane3, self.p2Lane1, self.p2Lane2, self.p2Lane3] 
-       #    AndresEffect(currentLane, currentPlayer, lanes)
-       # else:
-     #       print("No effect applied.")
         if(isP1Turn):
             if(lane == 1):
                 try:
