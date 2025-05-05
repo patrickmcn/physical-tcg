@@ -141,12 +141,12 @@ class Deck2(Deck):
         self.cards = []
         cards = [1, 2, 3, 4, 5] 
         #self.cards.append(Cards("test", 2, "spell"))
-        self.cards.append(Cards("spell06", 0, "spell", "blue", "EnergyDrink"))
-        self.cards.append(Cards("spell01", 0, "spell", "blue", "Caltrops"))
-        self.cards.append(Cards("spell04", 0, "spell", "blue", "Booster"))
-        self.cards.append(Cards("spell05", 0, "spell", "blue", "Invigorate"))
-        self.cards.append(Cards("spell03", 0, "spell", "blue", "Disarm"))
-        self.cards.append(Cards("spell02", 0, "spell", "blue", "Debilitate"))
+        self.cards.append(Cards("spell06", 2, "spell", "blue"))
+        self.cards.append(Cards("spell01", -2, "spell", "blue"))
+        self.cards.append(Cards("spell04", 1, "spell", "blue"))
+        self.cards.append(Cards("spell05", 3, "spell", "blue"))
+        self.cards.append(Cards("spell03", -3, "spell", "blue"))
+        self.cards.append(Cards("spell02", -3, "spell", "blue"))
         self.cards.append(Cards("monster01", 2,  "monster", "red"))
         self.cards.append(Cards("monster02", 3,  "monster", "red"))
         self.cards.append(Cards("monster03", 3,  "monster", "red"))
@@ -162,16 +162,17 @@ class Deck2(Deck):
         self.cards.append(Cards("monster13", 4,  "monster", "red"))
         self.cards.append(Cards("monster14", 2,  "monster", "red"))
         self.cards.append(Cards("monster15", 4,  "monster", "red"))
+        self.shuffle()
         
-        for num in range(11):
-            power = random.choice(cards)
-            self.cards.append(Cards(f"test{power}", power, "monster", "red"))
+        #for num in range(11):
+         #   power = random.choice(cards)
+          #  self.cards.append(Cards(f"test{power}", power, "monster", "red"))
 
 
 class MainGUI(Frame):
     def __init__(self, parent, roundsNeededToWin):
         Frame.__init__(self, parent, bg = "white")
-        self.p1deck = Deck()
+        self.p1deck = Deck2()
         self.p2deck = Deck2()
         self.p1hand = []
         self.p2hand = []
@@ -516,7 +517,7 @@ class MainGUI(Frame):
                 self.p2Card5.configure(image =img)
                 self.p2Card5.image = img
 
-    def playSpell(self,isP1Turn, handslot, lane):
+    def playSpell(self, isP1Turn, handslot, lane):
         if(isP1Turn):
             if(lane == 1):
                 try:
@@ -595,6 +596,10 @@ class MainGUI(Frame):
             return ""
         
         if(self.p1hand[handslot].type == "spell" and turnCheck == 1):
+            self.playSpell(isP1Turn, handslot, lane)
+            return ""
+        
+        if(self.p2hand[handslot].type == "spell" and turnCheck == 2):
             self.playSpell(isP1Turn, handslot, lane)
             return ""
         
@@ -757,7 +762,7 @@ class MainGUI(Frame):
 
     def roundReset(self):
         self.round += 1
-        self.p1deck = Deck()
+        self.p1deck = Deck2()
         self.p2deck = Deck2()
         self.p1hand = []
         self.p2hand = []
