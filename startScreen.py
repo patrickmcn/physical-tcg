@@ -5,7 +5,7 @@ class StartGUI(Frame):
     def __init__(self, parent):
         Frame.__init__(self, parent, bg = "white" )
         self.setUpGUI()
-        self.roundsNeededToWin = 3
+        self.roundsNeededToWin = 2
 
     def setUpGUI(self):
         for row in range(2):
