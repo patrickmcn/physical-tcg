@@ -816,23 +816,20 @@ class MainGUI(Frame):
         if(self.winners.count("P1win") == self.winsNeeded ):
             print("P1 wins the game")
             self.display.configure(text = "P1 wins the game")
-            self.destroy()
+            self.quit()
             self.update()
-            self.quit
             return ""
         if(self.winners.count("P2win") == self.winsNeeded ):
             print("P2 wins the game")
             self.display.configure(text = "P2 wins the game")
-            self.destroy()
+            self.quit()
             self.update()
-            self.quit
             return""
         if(self.round > ((self.round * 2) - 1)):
             print("Game ended in a tie")
             self.display.configure(text = "Game ended in a tie")
-            self.destroy()
+            self.quit()
             self.update()
-            self.quit
             return ""
         self.roundReset()
    
