@@ -141,12 +141,12 @@ class Deck2(Deck):
         self.cards = []
         cards = [1, 2, 3, 4, 5] 
         #self.cards.append(Cards("test", 2, "spell"))
-        self.cards.append(Cards("EnergyDrink", 0, "spell", "blue", "EnergyDrink"))
-        self.cards.append(Cards("Caltrops", 0, "spell", "blue", "Caltrops"))
-        self.cards.append(Cards("Booster", 0, "spell", "blue", "Booster"))
-        self.cards.append(Cards("Invigorate", 0, "spell", "blue", "Invigorate"))
-        self.cards.append(Cards("Disarm", 0, "spell", "blue", "Disarm"))
-        self.cards.append(Cards("Debilitate", 0, "spell", "blue", "Debilitate"))
+        self.cards.append(Cards("spell06", 0, "spell", "blue", "EnergyDrink"))
+        self.cards.append(Cards("spell01", 0, "spell", "blue", "Caltrops"))
+        self.cards.append(Cards("spell04", 0, "spell", "blue", "Booster"))
+        self.cards.append(Cards("spell05", 0, "spell", "blue", "Invigorate"))
+        self.cards.append(Cards("spell03", 0, "spell", "blue", "Disarm"))
+        self.cards.append(Cards("spell02", 0, "spell", "blue", "Debilitate"))
         self.cards.append(Cards("monster01", 2,  "monster", "red"))
         self.cards.append(Cards("monster02", 3,  "monster", "red"))
         self.cards.append(Cards("monster03", 3,  "monster", "red"))
