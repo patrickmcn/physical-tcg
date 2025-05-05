@@ -154,6 +154,16 @@ class MainGUI(Frame):
         self.winsNeeded = roundsNeededToWin
         self.roundResults = "Round Results:"
         self.setUpGUI()
+        #self.roundNum = "Best of 3"
+
+        
+        #if(self.winsNeeded == 1):
+        #    self.roundNum = "Best of 1"
+        #if(self.roundNum == 2):
+        #    self.roundNum= "Best of 3"
+        #if(self.winsNeeded == 1):
+        #    self.roundNum = "Best of 5"
+
 
     def putInHand(self, whoseturn):
         if(whoseturn == 1):
@@ -304,7 +314,7 @@ class MainGUI(Frame):
         self.player1Lane3.image = img
         self.player1Lane3.grid(row = 3,column = 3)
 
-        self.roundLabel = Label(self, text = f"Best of {self.winsNeeded + 1}\nRound {self.round}")
+        self.roundLabel = Label(self, text = f" Best of {self.winsNeeded + 1}\nRound {self.round}")
         self.roundLabel.grid(row = 3, column = 4 )
 
         p1c1 = self.p1hand[0].imagefile
