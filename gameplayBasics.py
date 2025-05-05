@@ -3,7 +3,7 @@ from tkinter import *
 import random
 import time
 import detect_color
-from CardEffects import EnergyDrink, Caltrops, AndresEffect
+from CardEffects import EnergyDrink, Caltrops, Disarm, Debilitate, Booster, Invigorate
 class Cards:
     def __init__(self, name = "test", power = 0, type = "monster", color = None, effect = 0):
         self.name = name
@@ -90,6 +90,17 @@ class Cards:
     def __add__(self, other):
         combinedPower = self.power + other.power
         return combinedPower
+    
+    def applyEffect(self, target, currentLane, currentPlayer, lanes):
+        if self.effect == "EnergyDrink":
+            EnergyDrink(target)
+        elif self.effect == "Caltrops":
+            Caltrops(target)
+        elif self.effect == "Booster":
+            Booster(target)
+        elif self.effect == "Disarm":
+            Disarm(target) 
+
 
 class Deck:
     def __init__(self):
@@ -126,9 +137,12 @@ class Deck2(Deck):
         self.cards = []
         cards = [1, 2, 3, 4, 5] 
         #self.cards.append(Cards("test", 2, "spell"))
+        self.cards.append(Cards("Energy Drink", 0, "spell", "blue", "Energy Drink"))
+        self.cards.append(Cards("Caltrops", 0, "spell", "blue", "Caltrops"))
         for num in range(11):
             power = random.choice(cards)
             self.cards.append(Cards(f"test{power}", power, "monster", "red"))
+
 
 class MainGUI(Frame):
     def __init__(self, parent):
@@ -249,19 +263,19 @@ class MainGUI(Frame):
         self.p2Card5.menu.add_command(label= " Lane 2", command= lambda: self.playLane(self.p1Turn, 4, 2, 2) )
         self.p2Card5.menu.add_command(label= " Lane 3", command= lambda: self.playLane(self.p1Turn, 4, 3, 2) )
 
-        p2l1 = "physical-tcg/images/p2l1.png"
+        p2l1 = "images/p2l1.png"
         img = PhotoImage(file= p2l1)
         self.player2Lane1 = Label(self, image= img, bg = "black")
         self.player2Lane1.image = img
         self.player2Lane1.grid(row = 1,column = 1 )
 
-        p2l2 = "physical-tcg/images/p2l2.png"
+        p2l2 = "images/p2l2.png"
         img = PhotoImage(file= p2l2)
         self.player2Lane2 = Label(self, image= img)
         self.player2Lane2.image = img
         self.player2Lane2.grid(row = 1,column = 2 )
 
-        p2l3 = "physical-tcg/images/p2l3.png"
+        p2l3 = "images/p2l3.png"
         img = PhotoImage(file= p2l3)
         self.player2Lane3 = Label(self, image= img)
         self.player2Lane3.image = img
@@ -285,19 +299,19 @@ class MainGUI(Frame):
         nextButton = Button(self, text = "Next Phase", command = lambda: self.turnProgression(), font=("TkDefaultFont",20))
         nextButton.grid(row = 2, column = 4)
 
-        p1l1 = "physical-tcg/images/p1l1.png"
+        p1l1 = "images/p1l1.png"
         img = PhotoImage(file= p1l1)
         self.player1Lane1 = Label(self, image= img, bg = "black")
         self.player1Lane1.image = img
         self.player1Lane1.grid(row = 3,column = 1 )
 
-        p1l2 = "physical-tcg/images/p1l2.png"
+        p1l2 = "images/p1l2.png"
         img = PhotoImage(file= p1l2)
         self.player1Lane2 = Label(self, image= img)
         self.player1Lane2.image = img
         self.player1Lane2.grid(row = 3,column = 2)
 
-        p1l3 = "physical-tcg/images/p1l3.png"
+        p1l3 = "images/p1l3.png"
         img = PhotoImage(file= p1l3)
         self.player1Lane3 = Label(self, image= img)
         self.player1Lane3.image = img
@@ -443,7 +457,7 @@ class MainGUI(Frame):
            
 
     def handManager(self, isP1Turn, handslot):
-        img = PhotoImage(file = "physical-tcg/images/default.png")
+        img = PhotoImage(file = "images/default.png")
         if (isP1Turn == True):
             if(handslot == 0):
                 self.p1Card1.configure(image =img)
@@ -478,21 +492,6 @@ class MainGUI(Frame):
                 self.p2Card5.image = img
 
     def playSpell(self,isP1Turn, handslot, lane):
-        #card = self.p1hand[handslot] if isP1Turn else self.p2hand[handslot]
-
-       # if card.effect == 1:
-       #     target = self.p1Lane1[0] if isP1Turn else self.p2Lane1[0]
-        #    EnergyDrink(target)
-       # elif card.effect == 2:
-        #    target = self.p1Lane1[0] if isP1Turn else self.p2Lane[0]
-        #    Caltrops(target)
-      #  elif card.effect == 3:
-       #     currentLane = lane
-       #     currentPlayer = 0 if isP1Turn else 1
-       #     lanes = [self.p1Lane1, self.p1Lane2, self.p1Lane3, self.p2Lane1, self.p2Lane2, self.p2Lane3] 
-       #    AndresEffect(currentLane, currentPlayer, lanes)
-       # else:
-     #       print("No effect applied.")
         if(isP1Turn):
             if(lane == 1):
                 try:
