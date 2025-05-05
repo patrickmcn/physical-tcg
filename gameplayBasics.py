@@ -47,7 +47,7 @@ class Cards:
         if(os.path.isfile(value)):
             self._imagefile = value
         else:
-            self._imagefile = "images/default.png"
+            self._imagefile = "physical-tcg/images/default.png"
     
     @property
     def color(self):
@@ -100,6 +100,10 @@ class Cards:
             Booster(target)
         elif self.effect == "Disarm":
             Disarm(target) 
+        elif self.effect == "Debilitate":
+            Debilitate(target) 
+        elif self.effect == "Invigorate":
+            Invigorate(target) 
 
 
 class Deck:
@@ -137,8 +141,28 @@ class Deck2(Deck):
         self.cards = []
         cards = [1, 2, 3, 4, 5] 
         #self.cards.append(Cards("test", 2, "spell"))
-        self.cards.append(Cards("Energy Drink", 0, "spell", "blue", "Energy Drink"))
-        self.cards.append(Cards("Caltrops", 0, "spell", "blue", "Caltrops"))
+        self.cards.append(Cards("spell06", 0, "spell", "blue", "EnergyDrink"))
+        self.cards.append(Cards("spell01", 0, "spell", "blue", "Caltrops"))
+        self.cards.append(Cards("spell04", 0, "spell", "blue", "Booster"))
+        self.cards.append(Cards("spell05", 0, "spell", "blue", "Invigorate"))
+        self.cards.append(Cards("spell03", 0, "spell", "blue", "Disarm"))
+        self.cards.append(Cards("spell02", 0, "spell", "blue", "Debilitate"))
+        self.cards.append(Cards("monster01", 2,  "monster", "red"))
+        self.cards.append(Cards("monster02", 3,  "monster", "red"))
+        self.cards.append(Cards("monster03", 3,  "monster", "red"))
+        self.cards.append(Cards("monster04", 5,  "monster", "red"))
+        self.cards.append(Cards("monster05", 4,  "monster", "red"))
+        self.cards.append(Cards("monster06", 3,  "monster", "red"))
+        self.cards.append(Cards("monster07", 4,  "monster", "red"))
+        self.cards.append(Cards("monster08", 4,  "monster", "red"))
+        self.cards.append(Cards("monster09", 4,  "monster", "red"))
+        self.cards.append(Cards("monster10", 4,  "monster", "red"))
+        self.cards.append(Cards("monster11", 2,  "monster", "red"))
+        self.cards.append(Cards("monster12", 2,  "monster", "red"))
+        self.cards.append(Cards("monster13", 4,  "monster", "red"))
+        self.cards.append(Cards("monster14", 2,  "monster", "red"))
+        self.cards.append(Cards("monster15", 4,  "monster", "red"))
+        
         for num in range(11):
             power = random.choice(cards)
             self.cards.append(Cards(f"test{power}", power, "monster", "red"))
@@ -263,19 +287,19 @@ class MainGUI(Frame):
         self.p2Card5.menu.add_command(label= " Lane 2", command= lambda: self.playLane(self.p1Turn, 4, 2, 2) )
         self.p2Card5.menu.add_command(label= " Lane 3", command= lambda: self.playLane(self.p1Turn, 4, 3, 2) )
 
-        p2l1 = "images/p2l1.png"
+        p2l1 = "physical-tcg/images/p2l1.png"
         img = PhotoImage(file= p2l1)
         self.player2Lane1 = Label(self, image= img, bg = "black")
         self.player2Lane1.image = img
         self.player2Lane1.grid(row = 1,column = 1 )
 
-        p2l2 = "images/p2l2.png"
+        p2l2 = "physical-tcg/images/p2l2.png"
         img = PhotoImage(file= p2l2)
         self.player2Lane2 = Label(self, image= img)
         self.player2Lane2.image = img
         self.player2Lane2.grid(row = 1,column = 2 )
 
-        p2l3 = "images/p2l3.png"
+        p2l3 = "physical-tcg/images/p2l3.png"
         img = PhotoImage(file= p2l3)
         self.player2Lane3 = Label(self, image= img)
         self.player2Lane3.image = img
@@ -299,19 +323,19 @@ class MainGUI(Frame):
         nextButton = Button(self, text = "Next Phase", command = lambda: self.turnProgression(), font=("TkDefaultFont",20))
         nextButton.grid(row = 2, column = 4)
 
-        p1l1 = "images/p1l1.png"
+        p1l1 = "physical-tcg/images/p1l1.png"
         img = PhotoImage(file= p1l1)
         self.player1Lane1 = Label(self, image= img, bg = "black")
         self.player1Lane1.image = img
         self.player1Lane1.grid(row = 3,column = 1 )
 
-        p1l2 = "images/p1l2.png"
+        p1l2 = "physical-tcg/images/p1l2.png"
         img = PhotoImage(file= p1l2)
         self.player1Lane2 = Label(self, image= img)
         self.player1Lane2.image = img
         self.player1Lane2.grid(row = 3,column = 2)
 
-        p1l3 = "images/p1l3.png"
+        p1l3 = "physical-tcg/images/p1l3.png"
         img = PhotoImage(file= p1l3)
         self.player1Lane3 = Label(self, image= img)
         self.player1Lane3.image = img
@@ -457,7 +481,7 @@ class MainGUI(Frame):
            
 
     def handManager(self, isP1Turn, handslot):
-        img = PhotoImage(file = "images/default.png")
+        img = PhotoImage(file = "physical-tcg/images/default.png")
         if (isP1Turn == True):
             if(handslot == 0):
                 self.p1Card1.configure(image =img)
