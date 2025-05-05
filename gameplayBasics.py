@@ -3,7 +3,7 @@ from tkinter import *
 import random
 import time
 import detect_color
-from CardEffects import EnergyDrink, Caltrops, AndresEffect
+from CardEffects import EnergyDrink, Caltrops, Disarm, Debilitate, Booster, Invigorate
 class Cards:
     def __init__(self, name = "test", power = 0, type = "monster", color = None, effect = 0):
         self.name = name
@@ -47,7 +47,7 @@ class Cards:
         if(os.path.isfile(value)):
             self._imagefile = value
         else:
-            self._imagefile = "images/default.png"
+            self._imagefile = "physical-tcg/images/default.png"
     
     @property
     def color(self):
@@ -90,6 +90,21 @@ class Cards:
     def __add__(self, other):
         combinedPower = self.power + other.power
         return combinedPower
+    
+    def applyEffect(self, target, currentLane, currentPlayer, lanes):
+        if self.effect == "EnergyDrink":
+            EnergyDrink(target)
+        elif self.effect == "Caltrops":
+            Caltrops(target)
+        elif self.effect == "Booster":
+            Booster(target)
+        elif self.effect == "Disarm":
+            Disarm(target) 
+        elif self.effect == "Debilitate":
+            Debilitate(target) 
+        elif self.effect == "Invigorate":
+            Invigorate(target) 
+
 
 class Deck:
     def __init__(self):
@@ -126,14 +141,38 @@ class Deck2(Deck):
         self.cards = []
         cards = [1, 2, 3, 4, 5] 
         #self.cards.append(Cards("test", 2, "spell"))
-        for num in range(11):
-            power = random.choice(cards)
-            self.cards.append(Cards(f"test{power}", power, "monster", "red"))
+        self.cards.append(Cards("spell06", 2, "spell", "blue"))
+        self.cards.append(Cards("spell01", -2, "spell", "blue"))
+        self.cards.append(Cards("spell04", 1, "spell", "blue"))
+        self.cards.append(Cards("spell05", 3, "spell", "blue"))
+        self.cards.append(Cards("spell03", -3, "spell", "blue"))
+        self.cards.append(Cards("spell02", -3, "spell", "blue"))
+        self.cards.append(Cards("monster01", 2,  "monster", "red"))
+        self.cards.append(Cards("monster02", 3,  "monster", "red"))
+        self.cards.append(Cards("monster03", 3,  "monster", "red"))
+        self.cards.append(Cards("monster04", 5,  "monster", "red"))
+        self.cards.append(Cards("monster05", 4,  "monster", "red"))
+        self.cards.append(Cards("monster06", 3,  "monster", "red"))
+        self.cards.append(Cards("monster07", 4,  "monster", "red"))
+        self.cards.append(Cards("monster08", 4,  "monster", "red"))
+        self.cards.append(Cards("monster09", 4,  "monster", "red"))
+        self.cards.append(Cards("monster10", 4,  "monster", "red"))
+        self.cards.append(Cards("monster11", 2,  "monster", "red"))
+        self.cards.append(Cards("monster12", 2,  "monster", "red"))
+        self.cards.append(Cards("monster13", 4,  "monster", "red"))
+        self.cards.append(Cards("monster14", 2,  "monster", "red"))
+        self.cards.append(Cards("monster15", 4,  "monster", "red"))
+        self.shuffle()
+        
+        #for num in range(11):
+         #   power = random.choice(cards)
+          #  self.cards.append(Cards(f"test{power}", power, "monster", "red"))
+
 
 class MainGUI(Frame):
-    def __init__(self, parent):
+    def __init__(self, parent, roundsNeededToWin):
         Frame.__init__(self, parent, bg = "white")
-        self.p1deck = Deck()
+        self.p1deck = Deck2()
         self.p2deck = Deck2()
         self.p1hand = []
         self.p2hand = []
@@ -151,7 +190,7 @@ class MainGUI(Frame):
         self.listofP2Locations = [self.p2Lane1, self.p2Lane2, self.p2Lane3]
         self.round = 1
         self.winners = []
-        self.winsNeeded = 2
+        self.winsNeeded = roundsNeededToWin
         self.roundResults = "Round Results:"
         self.setUpGUI()
 
@@ -164,6 +203,7 @@ class MainGUI(Frame):
             self.p2hand.append(card)
     
     def setUpGUI(self):
+        print(self.winsNeeded)
         for i in range(5):
             self.putInHand(1)
             self.putInHand(2)
@@ -371,8 +411,8 @@ class MainGUI(Frame):
         self.p1Card5.menu.add_command(label= " Lane 2", command= lambda: self.playLane(self.p1Turn, 4, 2, 1) )
         self.p1Card5.menu.add_command(label= " Lane 3", command= lambda: self.playLane(self.p1Turn, 4, 3, 1) )
 
-        #self.display = Label(self, text = "test", anchor = "center")
-        #self.display.grid(row = 3, column = 0 )
+        self.display = Label(self, text = "blank", anchor = "center")
+        self.display.grid(row = 3, column = 0 )
 
         self.pack(side = "bottom",fill = BOTH, expand = 1)
     
@@ -477,22 +517,7 @@ class MainGUI(Frame):
                 self.p2Card5.configure(image =img)
                 self.p2Card5.image = img
 
-    def playSpell(self,isP1Turn, handslot, lane):
-        #card = self.p1hand[handslot] if isP1Turn else self.p2hand[handslot]
-
-       # if card.effect == 1:
-       #     target = self.p1Lane1[0] if isP1Turn else self.p2Lane1[0]
-        #    EnergyDrink(target)
-       # elif card.effect == 2:
-        #    target = self.p1Lane1[0] if isP1Turn else self.p2Lane[0]
-        #    Caltrops(target)
-      #  elif card.effect == 3:
-       #     currentLane = lane
-       #     currentPlayer = 0 if isP1Turn else 1
-       #     lanes = [self.p1Lane1, self.p1Lane2, self.p1Lane3, self.p2Lane1, self.p2Lane2, self.p2Lane3] 
-       #    AndresEffect(currentLane, currentPlayer, lanes)
-       # else:
-     #       print("No effect applied.")
+    def playSpell(self, isP1Turn, handslot, lane):
         if(isP1Turn):
             if(lane == 1):
                 try:
@@ -571,6 +596,10 @@ class MainGUI(Frame):
             return ""
         
         if(self.p1hand[handslot].type == "spell" and turnCheck == 1):
+            self.playSpell(isP1Turn, handslot, lane)
+            return ""
+        
+        if(self.p2hand[handslot].type == "spell" and turnCheck == 2):
             self.playSpell(isP1Turn, handslot, lane)
             return ""
         
@@ -733,7 +762,7 @@ class MainGUI(Frame):
 
     def roundReset(self):
         self.round += 1
-        self.p1deck = Deck()
+        self.p1deck = Deck2()
         self.p2deck = Deck2()
         self.p1hand = []
         self.p2hand = []
@@ -815,26 +844,33 @@ class MainGUI(Frame):
         if(self.winners.count("P1win") == self.winsNeeded ):
             print("P1 wins the game")
             self.display.configure(text = "P1 wins the game")
-            self.quit()
+            self.destroy()
+            self.update()
+            return ""
         if(self.winners.count("P2win") == self.winsNeeded ):
             print("P2 wins the game")
             self.display.configure(text = "P2 wins the game")
-            self.quit()
+            self.destroy()
+            self.update()
+            return""
         if(self.round > ((self.round * 2) - 1)):
             print("Game ended in a tie")
             self.display.configure(text = "Game ended in a tie")
-            self.quit()
+            self.destroy()
+            self.update()
+            return ""
         self.roundReset()
    
 
         
 
-        
-#create window
-window = Tk()
-#set window title 
-window.title("Card Test")
-#generate the GUI
-p = MainGUI(window)
-#display the gut and wait for user interaction
-window.mainloop()
+def gameScreen(rounds):
+    #create window
+    window = Toplevel()
+    #set window title 
+    window.title("Card Test")
+    #generate the GUI
+    p = MainGUI(window,rounds)
+    #display the gut and wait for user interaction
+    #window.mainloop()
+#gameScreen()
