@@ -131,7 +131,7 @@ class Deck2(Deck):
             self.cards.append(Cards(f"test{power}", power, "monster", "red"))
 
 class MainGUI(Frame):
-    def __init__(self, parent):
+    def __init__(self, parent, roundsNeededToWin):
         Frame.__init__(self, parent, bg = "white")
         self.p1deck = Deck()
         self.p2deck = Deck2()
@@ -151,7 +151,7 @@ class MainGUI(Frame):
         self.listofP2Locations = [self.p2Lane1, self.p2Lane2, self.p2Lane3]
         self.round = 1
         self.winners = []
-        self.winsNeeded = 2
+        self.winsNeeded = roundsNeededToWin
         self.roundResults = "Round Results:"
         self.setUpGUI()
 
@@ -164,6 +164,7 @@ class MainGUI(Frame):
             self.p2hand.append(card)
     
     def setUpGUI(self):
+        print(self.winsNeeded)
         for i in range(5):
             self.putInHand(1)
             self.putInHand(2)
@@ -815,26 +816,36 @@ class MainGUI(Frame):
         if(self.winners.count("P1win") == self.winsNeeded ):
             print("P1 wins the game")
             self.display.configure(text = "P1 wins the game")
-            self.quit()
+            self.destroy()
+            self.update()
+            self.quit
+            return ""
         if(self.winners.count("P2win") == self.winsNeeded ):
             print("P2 wins the game")
             self.display.configure(text = "P2 wins the game")
-            self.quit()
+            self.destroy()
+            self.update()
+            self.quit
+            return""
         if(self.round > ((self.round * 2) - 1)):
             print("Game ended in a tie")
             self.display.configure(text = "Game ended in a tie")
-            self.quit()
+            self.destroy()
+            self.update()
+            self.quit
+            return ""
         self.roundReset()
    
 
         
 
-def gameScreen():
+def gameScreen(rounds):
     #create window
-    window = Tk()
+    window = Toplevel()
     #set window title 
     window.title("Card Test")
     #generate the GUI
-    p = MainGUI(window)
+    p = MainGUI(window,rounds)
     #display the gut and wait for user interaction
     window.mainloop()
+#gameScreen()
