@@ -343,7 +343,7 @@ class MainGUI(Frame):
         self.player1Lane3.image = img
         self.player1Lane3.grid(row = 3,column = 3)
 
-        self.roundLabel = Label(self, text = f"Best of {self.winsNeeded + 1}\nRound {self.round}")
+        self.roundLabel = Label(self, text = f"{self.bestOf(self.winsNeeded)}\nRound {self.round}")
         self.roundLabel.grid(row = 3, column = 4 )
 
         p1c1 = self.p1hand[0].imagefile
@@ -758,6 +758,16 @@ class MainGUI(Frame):
             img = PhotoImage(file = self.p2hand[i].imagefile )
             listOfP2Hand[i].configure(image = img)
             listOfP2Hand[i].image = img
+    
+    def bestOf(self, winsNeeded):
+        if(winsNeeded == 1):
+            return "Best of One"
+        if(winsNeeded == 2):
+            return "Best of Three"
+        if(winsNeeded == 3):
+            return "Best of Five"
+        if(winsNeeded == 10000):
+            return "Unlimited"
         
 
     def roundReset(self):
@@ -776,7 +786,7 @@ class MainGUI(Frame):
         self.p1Turn = True
         self.turnCount = 1
         self.playedMonster = False
-        self.roundLabel.configure(text = f"Best of {self.winsNeeded + 1}\nRound {self.round}")
+        self.roundLabel.configure(text = f"{self.bestOf(self.winsNeeded)}\nRound {self.round}")
         self.turnNum.configure(text = f"{"Player 1" if self.p1Turn else "Player 2"}\nTurn {self.turnCount}")
         self.resetLanes()
         self.resetHand()
@@ -844,19 +854,19 @@ class MainGUI(Frame):
         if(self.winners.count("P1win") == self.winsNeeded ):
             print("P1 wins the game")
             self.display.configure(text = "P1 wins the game")
-            self.destroy()
+            self.quit()
             self.update()
             return ""
         if(self.winners.count("P2win") == self.winsNeeded ):
             print("P2 wins the game")
             self.display.configure(text = "P2 wins the game")
-            self.destroy()
+            self.quit()
             self.update()
             return""
         if(self.round > ((self.round * 2) - 1)):
             print("Game ended in a tie")
             self.display.configure(text = "Game ended in a tie")
-            self.destroy()
+            self.quit()
             self.update()
             return ""
         self.roundReset()
