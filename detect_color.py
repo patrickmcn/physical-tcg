@@ -7,7 +7,7 @@ import cv2
 import time
 
 def detectColor():
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1)
     frame_rate = 5
     prev = 0
     while True:

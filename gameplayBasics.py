@@ -109,11 +109,28 @@ class Cards:
 class Deck:
     def __init__(self):
         self.cards = []
-        cards = [1, 2, 3, 4, 5] 
-        self.cards.append(Cards("test", 2, "spell", "blue"))
-        for num in range(11):
-            power = random.choice(cards)
-            self.cards.append(Cards(f"test{power}", power, "monster", "red"))
+        self.cards.append(Cards("spell07", 1, "spell", "blue"))
+        self.cards.append(Cards("spell08", 2, "spell", "blue"))
+        self.cards.append(Cards("spell09", 3, "spell", "blue"))
+        self.cards.append(Cards("spell10", -3, "spell", "blue"))
+        self.cards.append(Cards("spell11", -2, "spell", "blue"))
+        self.cards.append(Cards("spell12", -1, "spell", "blue"))
+        self.cards.append(Cards("monster16", 4,  "monster", "red"))
+        self.cards.append(Cards("monster17", 4,  "monster", "red"))
+        self.cards.append(Cards("monster18", 2,  "monster", "red"))
+        self.cards.append(Cards("monster19", 2,  "monster", "red"))
+        self.cards.append(Cards("monster20", 1,  "monster", "red"))
+        self.cards.append(Cards("monster21", 3,  "monster", "red"))
+        self.cards.append(Cards("monster22", 3,  "monster", "red"))
+        self.cards.append(Cards("monster23", 3,  "monster", "red"))
+        self.cards.append(Cards("monster24", 3,  "monster", "red"))
+        self.cards.append(Cards("monster25", 2,  "monster", "red"))
+        self.cards.append(Cards("monster26", 2,  "monster", "red"))
+        self.cards.append(Cards("monster27", 2,  "monster", "red"))
+        self.cards.append(Cards("monster28", 3,  "monster", "red"))
+        self.cards.append(Cards("monster29", 5,  "monster", "red"))
+        self.cards.append(Cards("monster30", 5,  "monster", "red"))
+        self.shuffle()
 
     @property
     def cards (self):
@@ -172,7 +189,7 @@ class Deck2(Deck):
 class MainGUI(Frame):
     def __init__(self, parent, roundsNeededToWin):
         Frame.__init__(self, parent, bg = "white")
-        self.p1deck = Deck2()
+        self.p1deck = Deck()
         self.p2deck = Deck2()
         self.p1hand = []
         self.p2hand = []
@@ -322,7 +339,7 @@ class MainGUI(Frame):
         lane3 = Label(self, text = "Lane 3", font=("TkDefaultFont",40))
         lane3.grid(row = 2, column = 3 )
 
-        nextButton = Button(self, text = "Next Phase", command = lambda: self.turnProgression(), font=("TkDefaultFont",20))
+        nextButton = Button(self, text = "Next Turn", command = lambda: self.turnProgression(), font=("TkDefaultFont",20))
         nextButton.grid(row = 2, column = 4)
 
         p1l1 = "physical-tcg/images/p1l1.png"
@@ -411,7 +428,7 @@ class MainGUI(Frame):
         self.p1Card5.menu.add_command(label= " Lane 2", command= lambda: self.playLane(self.p1Turn, 4, 2, 1) )
         self.p1Card5.menu.add_command(label= " Lane 3", command= lambda: self.playLane(self.p1Turn, 4, 3, 1) )
 
-        self.display = Label(self, text = "blank", anchor = "center")
+        self.display = Label(self, text = "", anchor = "center", bg= "white")
         self.display.grid(row = 3, column = 0 )
 
         self.pack(side = "bottom",fill = BOTH, expand = 1)
@@ -772,7 +789,7 @@ class MainGUI(Frame):
 
     def roundReset(self):
         self.round += 1
-        self.p1deck = Deck2()
+        self.p1deck = Deck()
         self.p2deck = Deck2()
         self.p1hand = []
         self.p2hand = []
