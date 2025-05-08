@@ -27,7 +27,7 @@ class StartGUI(Frame):
         self.optionButton.menu.add_command(label = "Best of 1", command = lambda: self.setRoundNumber(1))
         self.optionButton.menu.add_command(label = "Best of 3", command = lambda: self.setRoundNumber(2))
         self.optionButton.menu.add_command(label = "Best of 5", command = lambda: self.setRoundNumber(3))
-
+        self.optionButton.menu.add_command(label = "Unlimited", command = lambda: self.setRoundNumber(10000))
 
 
         self.quitGame = Button(self, text ="Quit Game", font=("TkDefaultFont",20), command = lambda: self.quit() )

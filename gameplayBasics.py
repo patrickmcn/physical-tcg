@@ -141,12 +141,12 @@ class Deck2(Deck):
         self.cards = []
         cards = [1, 2, 3, 4, 5] 
         #self.cards.append(Cards("test", 2, "spell"))
-        self.cards.append(Cards("spell06", 0, "spell", "blue", "EnergyDrink"))
-        self.cards.append(Cards("spell01", 0, "spell", "blue", "Caltrops"))
-        self.cards.append(Cards("spell04", 0, "spell", "blue", "Booster"))
-        self.cards.append(Cards("spell05", 0, "spell", "blue", "Invigorate"))
+        self.cards.append(Cards("spell06", 2 , "spell", "blue", "EnergyDrink"))
+        self.cards.append(Cards("spell01", -2, "spell", "blue", "Caltrops"))
+        self.cards.append(Cards("spell04", 1, "spell", "blue", "Booster"))
+        self.cards.append(Cards("spell05", 3, "spell", "blue", "Invigorate"))
         self.cards.append(Cards("spell03", 0, "spell", "blue", "Disarm"))
-        self.cards.append(Cards("spell02", 0, "spell", "blue", "Debilitate"))
+        self.cards.append(Cards("spell02", -3, "spell", "blue", "Debilitate"))
         self.cards.append(Cards("monster01", 2,  "monster", "red"))
         self.cards.append(Cards("monster02", 3,  "monster", "red"))
         self.cards.append(Cards("monster03", 3,  "monster", "red"))
@@ -162,6 +162,7 @@ class Deck2(Deck):
         self.cards.append(Cards("monster13", 4,  "monster", "red"))
         self.cards.append(Cards("monster14", 2,  "monster", "red"))
         self.cards.append(Cards("monster15", 4,  "monster", "red"))
+        self.shuffle()
         
         for num in range(11):
             power = random.choice(cards)
@@ -171,7 +172,7 @@ class Deck2(Deck):
 class MainGUI(Frame):
     def __init__(self, parent, roundsNeededToWin):
         Frame.__init__(self, parent, bg = "white")
-        self.p1deck = Deck()
+        self.p1deck = Deck2()
         self.p2deck = Deck2()
         self.p1hand = []
         self.p2hand = []
@@ -342,7 +343,7 @@ class MainGUI(Frame):
         self.player1Lane3.image = img
         self.player1Lane3.grid(row = 3,column = 3)
 
-        self.roundLabel = Label(self, text = f"Best of {self.winsNeeded + 1}\nRound {self.round}")
+        self.roundLabel = Label(self, text = f"{self.bestOf(self.winsNeeded)}\nRound {self.round}")
         self.roundLabel.grid(row = 3, column = 4 )
 
         p1c1 = self.p1hand[0].imagefile
@@ -520,56 +521,94 @@ class MainGUI(Frame):
         if(isP1Turn):
             if(lane == 1):
                 try:
-                    self.p1Lane1[0].power += self.p1hand[handslot].power
-                    self.p1hand.pop(handslot)
-                    self.p1hand.insert(handslot, Cards("default"))
-                    self.handManager(isP1Turn, handslot)
+                    if(self.p1hand[handslot].power >= 0):
+                        self.p1Lane1[0].power += self.p1hand[handslot].power
+                        self.p1hand.pop(handslot)
+                        self.p1hand.insert(handslot, Cards("default"))
+                        self.handManager(isP1Turn, handslot)
+                    '''else:
+                        self.p2Lane1[0].power += self.p1hand[handslot].power
+                        self.p1hand.pop(handslot)
+                        self.p1hand.insert(handslot, Cards("default"))
+                        self.handManager(isP1Turn, handslot)'''
+
                 except:
                     print("no monster card here")
                     self.display.configure(text = "no monster card here")
             if(lane == 2):
                 try:
-                    self.p1Lane2[0].power += self.p1hand[handslot].power
-                    self.p1hand.pop(handslot)
-                    self.p1hand.insert(handslot, Cards("default"))
-                    self.handManager(isP1Turn, handslot)
+                    if(self.p1hand[handslot].power >= 0):
+                        self.p1Lane2[0].power += self.p1hand[handslot].power
+                        self.p1hand.pop(handslot)
+                        self.p1hand.insert(handslot, Cards("default"))
+                        self.handManager(isP1Turn, handslot)
+                    '''else:
+                        self.p2Lane2[0].power += self.p1hand[handslot].power
+                        self.p1hand.pop(handslot)
+                        self.p1hand.insert(handslot, Cards("default"))
+                        self.handManager(isP1Turn, handslot)'''
                 except:
                     print("no monster card here")
                     self.display.configure(text = "no monster card here")
             if(lane == 3):
                 try:
-                    self.p1Lane3[0].power += self.p1hand[handslot].power
-                    self.p1hand.pop(handslot)
-                    self.p1hand.insert(handslot, Cards("default"))
-                    self.handManager(isP1Turn, handslot)
+                    if(self.p1hand[handslot].power >= 0):
+                        self.p1Lane3[0].power += self.p1hand[handslot].power
+                        self.p1hand.pop(handslot)
+                        self.p1hand.insert(handslot, Cards("default"))
+                        self.handManager(isP1Turn, handslot)
+                    '''else:
+                        self.p2Lane3[0].power += self.p1hand[handslot].power
+                        self.p1hand.pop(handslot)
+                        self.p1hand.insert(handslot, Cards("default"))
+                        self.handManager(isP1Turn, handslot)'''
                 except:
                     print("no monster card here")
                     self.display.configure(text = "no monster card here")
         if(isP1Turn == False):
             if(lane == 1):
                 try:
-                    self.p2Lane1[0].power += self.p1hand[handslot].power
-                    self.p2hand.pop(handslot)
-                    self.p2hand.insert(handslot, Cards("default"))
-                    self.handManager(isP1Turn, handslot)
+                    if(self.p2hand[handslot].power >= 0):
+                        self.p2Lane1[0].power += self.p1hand[handslot].power
+                        self.p2hand.pop(handslot)
+                        self.p2hand.insert(handslot, Cards("default"))
+                        self.handManager(isP1Turn, handslot)
+                    '''else:
+                        self.p1Lane1[0].power += self.p1hand[handslot].power
+                        self.p2hand.pop(handslot)
+                        self.p2hand.insert(handslot, Cards("default"))
+                        self.handManager(isP1Turn, handslot)'''
+
                 except:
                     print("no monster card here")
                     self.display.configure(text = "no monster card here")
             if(lane == 2):
                 try:
-                    self.p2Lane2[0].power += self.p1hand[handslot].power
-                    self.p2hand.pop(handslot)
-                    self.p2hand.insert(handslot, Cards("default"))
-                    self.handManager(isP1Turn, handslot)
+                    if(self.p2hand[handslot].power >= 0):
+                        self.p2Lane2[0].power += self.p1hand[handslot].power
+                        self.p2hand.pop(handslot)
+                        self.p2hand.insert(handslot, Cards("default"))
+                        self.handManager(isP1Turn, handslot)
+                    '''else:
+                        self.p1Lane2[0].power += self.p1hand[handslot].power
+                        self.p2hand.pop(handslot)
+                        self.p2hand.insert(handslot, Cards("default"))
+                        self.handManager(isP1Turn, handslot)'''
                 except:
                     print("no monster card here")
                     self.display.configure(text = "no monster card here")
             if(lane == 3):
                 try:
-                    self.p2Lane3[0].power += self.p1hand[handslot].power
-                    self.p2hand.pop(handslot)
-                    self.p2hand.insert(handslot, Cards("default"))
-                    self.handManager(isP1Turn, handslot)
+                    if(self.p2hand[handslot].power >= 0):
+                        self.p2Lane3[0].power += self.p1hand[handslot].power
+                        self.p2hand.pop(handslot)
+                        self.p2hand.insert(handslot, Cards("default"))
+                        self.handManager(isP1Turn, handslot)
+                    '''else:
+                        self.p1Lane3[0].power += self.p1hand[handslot].power
+                        self.p2hand.pop(handslot)
+                        self.p2hand.insert(handslot, Cards("default"))
+                        self.handManager(isP1Turn, handslot)'''
                 except:
                     print("no monster card here")
                     self.display.configure(text = "no monster card here")
@@ -598,12 +637,16 @@ class MainGUI(Frame):
             self.playSpell(isP1Turn, handslot, lane)
             return ""
         
+        if(self.p1hand[handslot].type == "spell" and turnCheck == 2):
+            self.playSpell(isP1Turn, handslot, lane)
+            return ""
+        
         if(len(self.listofP1Locations[lane - 1]) >= 1 and turnCheck == 1):
-            self.display.configure(text = "There is already a card here play somewhere else")
+            self.display.configure(text = "There is already a card here")
             return ""
         
         if(len(self.listofP2Locations[lane - 1]) >= 1 and turnCheck == 2):
-            self.display.configure(text = "There is already a card here play somewhere else")
+            self.display.configure(text = "There is already a card here")
             print(len(self.listofP2Locations[lane - 1]))
             print(self.listofP2Locations[lane - 1])
             return ""
@@ -754,10 +797,19 @@ class MainGUI(Frame):
             listOfP2Hand[i].configure(image = img)
             listOfP2Hand[i].image = img
         
+    def bestOf(self, winsNeeded):
+        if(winsNeeded == 1):
+            return "Best of One"
+        if(winsNeeded == 2):
+            return "Best of Three"
+        if(winsNeeded == 3):
+            return "Best of Five"
+        if(winsNeeded == 10000):
+            return "Unlimited"
 
     def roundReset(self):
         self.round += 1
-        self.p1deck = Deck()
+        self.p1deck = Deck2()
         self.p2deck = Deck2()
         self.p1hand = []
         self.p2hand = []
@@ -771,7 +823,7 @@ class MainGUI(Frame):
         self.p1Turn = True
         self.turnCount = 1
         self.playedMonster = False
-        self.roundLabel.configure(text = f"Best of {self.winsNeeded + 1}\nRound {self.round}")
+        self.roundLabel.configure(text = f"{self.bestOf(self.winsNeeded)}\nRound {self.round}")
         self.turnNum.configure(text = f"{"Player 1" if self.p1Turn else "Player 2"}\nTurn {self.turnCount}")
         self.resetLanes()
         self.resetHand()
@@ -839,19 +891,19 @@ class MainGUI(Frame):
         if(self.winners.count("P1win") == self.winsNeeded ):
             print("P1 wins the game")
             self.display.configure(text = "P1 wins the game")
-            self.destroy()
+            self.quit()
             self.update()
             return ""
         if(self.winners.count("P2win") == self.winsNeeded ):
             print("P2 wins the game")
             self.display.configure(text = "P2 wins the game")
-            self.destroy()
+            self.quit()
             self.update()
             return""
         if(self.round > ((self.round * 2) - 1)):
             print("Game ended in a tie")
             self.display.configure(text = "Game ended in a tie")
-            self.destroy()
+            self.quit()
             self.update()
             return ""
         self.roundReset()
